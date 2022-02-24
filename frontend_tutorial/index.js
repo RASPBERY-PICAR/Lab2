@@ -15,7 +15,7 @@ function client(){
     
     // get the data from the server
     client.on('data', (data) => {
-        document.getElementById("greet_from_server").innerHTML = data;
+        document.getElementById("greet_from_server").innerHTML = "Server hates " + data + "!!!!!";
         console.log(data.toString());
         client.end();
         client.destroy();
@@ -33,9 +33,8 @@ function greeting(){
     // get the element from html
     var name = document.getElementById("myName").value;
     // update the content in html
-    document.getElementById("greet").innerHTML = "Hello " + name + " !";
+    document.getElementById("greet").innerHTML = "Fuck you " + name + "!";
     // send the data to the server 
-    to_server(name);
     client();
 
 }
