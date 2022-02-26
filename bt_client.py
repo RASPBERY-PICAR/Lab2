@@ -1,5 +1,5 @@
 import bluetooth
-from picar_4wd.utils import picar
+from picar_4wd import picar
 
 status = picar.pi_read()
 battery_status = status['battery']
