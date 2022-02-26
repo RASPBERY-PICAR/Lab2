@@ -12,7 +12,8 @@ while 1:
     # sock.send(text)
 
     data = sock.recv(1024)
-    res = struct.unpack('%sf' % 2, data)
+    # res = struct.unpack('%sf' % 2, data)
+    print(type(data))
     print("from server: ", data)
 
 sock.close()

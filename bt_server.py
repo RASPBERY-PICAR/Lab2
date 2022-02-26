@@ -18,8 +18,10 @@ print("listening on port ", port)
 try:
     client, clientInfo = s.accept()
     while 1:   
-        data = struct.pack('%sf' % 2, *res)
+        data = struct.pack('%sf' % len(res), *res)
         client.send(data)
+        print(data)
+        print(struct.unpack('%sf' % len(res), *res))
         # print("server recv from: ", clientInfo)
         # data = client.recv(size)
         # print('data type:', type(data))
