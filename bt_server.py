@@ -20,7 +20,7 @@ try:
     while 1:   
         data = struct.pack('%sf' % len(res), *res)
         client.send(data)
-        break
+        text = input("Enter to continue: ")
         # print("server recv from: ", clientInfo)
         # data = client.recv(size)
         # print('data type:', type(data))
