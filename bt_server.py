@@ -13,11 +13,11 @@ try:
     while 1:   
         print("server recv from: ", clientInfo)
         data = client.recv(size)
+        print('data type:', type(data))
         if data:
             print(data)
-            # client.send(data) # Echo back to client
+            client.send(data) # Echo back to client
 except: 
     print("Closing socket")
     client.close()
     s.close()
-

@@ -1,25 +1,16 @@
 import bluetooth
-import picar_4wd as picar
 
-status = picar.pi_read()
-battery_status = status['battery']
-cpu_temp = status['cpu_temperature']
-
-host = "9C:B6:D0:F1:D7:DC" # The address of Raspberry PI Bluetooth adapter on the server.
+host = "E4:5F:01:42:E0:84" # The address of Raspberry PI Bluetooth adapter on the server.
 port = 1
 sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 sock.connect((host, port))
 while 1:
     text = input("Enter your message: ") # Note change to the old (Python 2) raw_input
-    # if text == "quit":
-    #     break
-    sock.send(battery_status)
-    sock.send(cpu_temp)
+    if text == "quit":
+        break
+    sock.send(text)
 
-
-    # data = sock.recv(1024)
-    # print("from server: ", data)
+    data = sock.recv(1024)
+    print("from server: ", data)
 
 sock.close()
-
-
