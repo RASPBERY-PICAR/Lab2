@@ -1,7 +1,7 @@
 import bluetooth
-from picar_4wd.utils import pi_read
+from picar_4wd.utils import picar
 
-status = pi_read()
+status = picar.pi_read()
 battery_status = status['battery']
 cpu_temp = status['cpu_temperature']
 
