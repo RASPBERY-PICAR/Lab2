@@ -14,17 +14,17 @@ s = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 s.bind((hostMACAddress, port))
 s.listen(backlog)
 print("listening on port ", port)
-try:
-    client, clientInfo = s.accept()
+# try:
+client, clientInfo = s.accept()
     # while 1:   
     #     print("server recv from: ", clientInfo)
     #     data = client.recv(size)
     #     if data:
     #         print(data)
     #         client.send(data) # Echo back to client
-    client.send(battery_status, cpu_temp)
-except: 
-    print("Closing socket")
-    client.close()
-    s.close()
+client.send(battery_status, cpu_temp)
+# except: 
+#     print("Closing socket")
+#     client.close()
+#     s.close()
 
