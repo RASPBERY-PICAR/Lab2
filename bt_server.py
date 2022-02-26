@@ -21,7 +21,7 @@ try:
         data = struct.pack('%sf' % len(res), *res)
         client.send(data)
         print(data)
-        print(struct.unpack('%sf' % len(res), *res))
+        print(struct.unpack('%sf' % len(res), data))
         # print("server recv from: ", clientInfo)
         # data = client.recv(size)
         # print('data type:', type(data))
