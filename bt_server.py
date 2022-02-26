@@ -20,8 +20,7 @@ try:
     while 1:   
         data = struct.pack('%sf' % len(res), *res)
         client.send(data)
-        print(data)
-        print(struct.unpack('%sf' % len(res), data))
+        break
         # print("server recv from: ", clientInfo)
         # data = client.recv(size)
         # print('data type:', type(data))
