@@ -1,6 +1,6 @@
 from lib2to3.pgen2.token import STAR
 import socket
-import picar_4wd as picar
+from picar_4wd import pi_read
 from time import sleep
 
 HOST = "172.20.10.3" # IP address of your Raspberry PI
@@ -22,7 +22,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
             if START:
                 sleep(0.05)
-                status = picar.pi_read()
+                status = pi_read()
                 battery_status = status['battery']
                 cpu_temp = status['cpu_temperature']
                 data = (str(battery_status) + ',' + str(cpu_temp)).encode('utf_8')
