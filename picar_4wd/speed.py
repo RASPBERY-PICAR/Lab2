@@ -1,7 +1,12 @@
+from secrets import token_bytes
+
+from torch import double
 import RPi.GPIO as GPIO
-import time, math
+import time
+import math
 import threading
 import picar_4wd as fc
+
 
 class Speed():
     def __init__(self, pin):
@@ -19,7 +24,8 @@ class Speed():
         # print('speed start')
 
     def print_result(self, s):
-        print("Rising: {}; Falling: {}; High Level: {}; Low Level: {}".format(s.count("01"), s.count("10"), s.count("1"), s.count("0")))
+        print("Rising: {}; Falling: {}; High Level: {}; Low Level: {}".format(
+            s.count("01"), s.count("10"), s.count("1"), s.count("0")))
 
     def fun_timer(self):
         while self.timer_flag:
@@ -27,7 +33,7 @@ class Speed():
             for _ in range(100):
                 l += str(GPIO.input(self.pin))
                 time.sleep(0.001)
-            # self.print_result(l)
+            self.print_result(l)
             count = (l.count("01") + l.count("10")) / 2
             rps = count / 20.0 * 10
             self.speed = round(2 * math.pi * 3.3 * rps, 2)
@@ -41,33 +47,35 @@ class Speed():
 
 
 def test1():
-    # import fwd as nc 
+    # import fwd as nc
     fc.forward(100)
 
     speed3 = Speed(25)
-    speed4 = Speed(4) 
+    speed4 = Speed(4)
     speed3.start()
     speed4.start()
     try:
         # nc.stop()
         while 1:
-            # speed_counter 
+            # speed_counter
             # = 0
             print(speed3())
             print(speed4())
-            print(" ") 
+            print(" ")
             time.sleep(0.5)
     finally:
         speed3.deinit()
         speed4.deinit()
-        fc.stop() 
+        fc.stop()
+
 
 def test2():
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(25, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
     while True:
         print(GPIO.input(12))
-        time.sleep(0.001) 
+        time.sleep(0.001)
+
 
 def test3():
     speed4 = Speed(25)
@@ -79,12 +87,11 @@ def test3():
         time.sleep(0.2)
         speed = speed4()
         x += speed * 0.2
-        print("%smm/s"%speed)
-    print("%smm"%x)
+        print("%smm/s" % speed)
+    print("%smm" % x)
     speed4.deinit()
     fc.stop()
+
+
 if __name__ == "__main__":
     test3()
-        
-
-    
