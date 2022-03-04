@@ -32,7 +32,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             if data == b"68\r\n": # right
                 print('getting key info')
                 print(data)
-                hf.turn_right_deg(90)
+                hf.turn_right_deg()
 
             if data == b"Exit\r\n":
                 print('closing')
