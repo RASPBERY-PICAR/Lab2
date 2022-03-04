@@ -1,6 +1,7 @@
 import socket
 import picar_4wd as picar
 from time import sleep
+import helper_functions as hf
 
 HOST = "172.20.10.3" # IP address of your Raspberry PI
 PORT = 65432          # Port to listen on (non-privileged ports are > 1023)
@@ -19,19 +20,19 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             if data == b"87\r\n": # up
                 print('getting key info')
                 print(data)
-                picar.forward_grid(3)
+                hf.forward_grid(3)
             if data == b"83\r\n": # down
                 print('getting key info')
                 print(data)
-                picar.backward_grid(3)
+                hf.backward_grid(3)
             if data == b"65\r\n": # left
                 print('getting key info')
                 print(data)
-                picar.turn_left_deg()
+                hf.turn_left_deg()
             if data == b"68\r\n": # right
                 print('getting key info')
                 print(data)
-                picar.turn_right_deg(90)
+                hf.turn_right_deg(90)
 
             if data == b"Exit\r\n":
                 print('closing')
