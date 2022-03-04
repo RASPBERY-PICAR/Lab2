@@ -27,11 +27,11 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             if data == b"65\r\n": # left
                 print('getting key info')
                 print(data)
-                picar.turn_left(90)
+                picar.turn_left_deg()
             if data == b"68\r\n": # right
                 print('getting key info')
                 print(data)
-                picar.turn_right(90)
+                picar.turn_right_deg(90)
 
             if data == b"Exit\r\n":
                 print('closing')
