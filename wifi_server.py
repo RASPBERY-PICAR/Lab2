@@ -42,7 +42,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
             if not START:
                 print("x")
-                data = client.recv(1024)
                 if data == b"Start\r\n":
                     START = True
 
