@@ -10,10 +10,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((HOST, PORT))
     s.listen()
     
-    try:
-        
+    try:     
         while 1:
-            print("1")
+            print("Running")
             client, clientInfo = s.accept()
 
             if not START:
@@ -31,17 +30,19 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 print(battery_status,cpu_temp)
                 print(data2)
                 client.send(data2)
-                START = False
-            elif( data != b""):
-                print(data)     
-                #client.sendall(data) # Echo back to client
-                print(START)
+
+                data = client.recv(1024)
+                if data == b"Exit\r\n":
+                    client.close()
+                    s.close()
+                    break
+                # START = False
+            # elif( data != b""):
+            #     print(data)     
+            #     #client.sendall(data) # Echo back to client
+            #     print(START)
                 
-            if data == b"quit\r\n":
-                client.close()
-                server.close()
-                s.close()
-                break
+            
                           
              #print("server recv from: ", clientInfo)
              #data = client.recv(1024)      # receive 1024 Bytes of message in binary format
