@@ -33,6 +33,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
                 data = client.recv(1024)
                 if data == b"Exit\r\n":
+                    print('closing')
                     client.close()
                     s.close()
                     break
@@ -46,7 +47,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                           
              #print("server recv from: ", clientInfo)
              #data = client.recv(1024)      # receive 1024 Bytes of message in binary format
-            
     except Exception as e: 
         print(e)
         print("Closing socket")
