@@ -18,8 +18,13 @@ function client(){
     
     // get the data from the server
     client.on('data', (data) => {
-        document.getElementById("bluetooth").innerHTML = data;
-        console.log(data.toString());
+        var s_list = data.toString().split(",");
+        var b_status = s_list[0];
+        var t_status = s_list[1];
+        // document.getElementById("bluetooth").innerHTML = data;
+        document.getElementById("battery").innerHTML = b_status;
+        document.getElementById("temperature").innerHTML = t_status;
+        // console.log(data.toString());
         client.end();
         client.destroy();
     });
