@@ -19,11 +19,11 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             if data == b"87\r\n": # up
                 print('getting key info')
                 print(data)
-                picar.forward(20)
+                picar.forward_grid(3)
             if data == b"83\r\n": # down
                 print('getting key info')
                 print(data)
-                picar.backward(20)
+                picar.backward_grid(3)
             if data == b"65\r\n": # left
                 print('getting key info')
                 print(data)
