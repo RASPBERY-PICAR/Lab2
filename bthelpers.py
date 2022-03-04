@@ -39,6 +39,8 @@ def set_target(target):
     target_name = target
 
 def send_data(data):
+    print('using bthelpers function')
+    print(data)
     sock.send(json.dumps(data))
 
 def terminate():
