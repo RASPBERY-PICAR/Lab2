@@ -33,7 +33,7 @@ PORT = 65432          # The port used by the server
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.bind((HOST, PORT))
 server_socket.listen(0)
-client, clientInfo = server_socket.accept()[0]
+client, clientInfo = server_socket.accept()
 connection = client.makefile('wb')
 print("server send to: ", clientInfo)
 try:
@@ -52,7 +52,7 @@ try:
             connection.write(struct.pack('<L', 0))
             finish = time.time()
 
-finally:
+except:
     connection.close()
     server_socket.close()
     print('Sent %d images in %d seconds at %.2ffps' % (
