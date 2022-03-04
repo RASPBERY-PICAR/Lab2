@@ -14,6 +14,22 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         while 1:
             print("Running")
             client, clientInfo = s.accept()
+            data = client.recv(1024)
+
+            if data == b"87\r\n": # up
+                picar.forward(20)
+            if data == b"83\r\n": # down
+                picar.backward(20)
+            if data == b"65\r\n": # left
+                picar.turn_left(90)
+            if data == b"68\r\n": # right
+                picar.turn_right(90)
+
+            if data == b"Exit\r\n":
+                print('closing')
+                client.close()
+                s.close()
+                break
 
             if not START:
                 print("x")
@@ -22,13 +38,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     START = True
 
             if START:
-                data = client.recv(1024)
-                if data == b"Exit\r\n":
-                    print('closing')
-                    client.close()
-                    s.close()
-                    break
-
                 sleep(1)
                 status = picar.pi_read()
                 battery_status = status['battery']
