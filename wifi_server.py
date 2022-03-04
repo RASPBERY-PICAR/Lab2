@@ -11,27 +11,41 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.listen()
     
     try:
+        
         while 1:
+            print("1")
             client, clientInfo = s.accept()
 
             if not START:
+                print("x")
                 data = client.recv(1024)
-                if data == b"Start":
+                if data == b"Start\r\n":
                     START = True
 
             if START:
-                sleep(0.05)
+                sleep(1)
                 status = picar.pi_read()
                 battery_status = status['battery']
                 cpu_temp = status['cpu_temperature']
-                data = (str(battery_status) + ',' + str(cpu_temp)).encode('utf_8')
-                client.send(data)
+                data2 = (str(battery_status) + ',' + str(cpu_temp)).encode('utf_8')
+                print(battery_status,cpu_temp)
+                print(data2)
+                client.send(data2)
+                START = False
+            elif( data != b""):
+                print(data)     
+                #client.sendall(data) # Echo back to client
+                print(START)
+                
+            if data == b"quit\r\n":
+                client.close()
+                server.close()
+                s.close()
+                break
+                          
+             #print("server recv from: ", clientInfo)
+             #data = client.recv(1024)      # receive 1024 Bytes of message in binary format
             
-            # print("server recv from: ", clientInfo)
-            # data = client.recv(1024)      # receive 1024 Bytes of message in binary format
-            # if data != b"":
-            #     print(data)     
-            #     client.sendall(data) # Echo back to client
     except Exception as e: 
         print(e)
         print("Closing socket")
