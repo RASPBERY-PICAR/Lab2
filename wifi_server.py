@@ -22,6 +22,13 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     START = True
 
             if START:
+                data = client.recv(1024)
+                if data == b"Exit\r\n":
+                    print('closing')
+                    client.close()
+                    s.close()
+                    break
+
                 sleep(1)
                 status = picar.pi_read()
                 battery_status = status['battery']
@@ -30,13 +37,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 print(battery_status,cpu_temp)
                 print(data2)
                 client.send(data2)
-
-                data = client.recv(1024)
-                if data == b"Exit\r\n":
-                    print('closing')
-                    client.close()
-                    s.close()
-                    break
                 # START = False
             # elif( data != b""):
             #     print(data)     
