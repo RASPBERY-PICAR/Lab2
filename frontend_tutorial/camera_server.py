@@ -38,19 +38,22 @@ try:
     output = SplitFrames(connection)
     with picamera.PiCamera(resolution='VGA', framerate=30) as camera:
         time.sleep(2)
-        start = time.time()
-        camera.start_recording(output, format='mjpeg')
-        camera.wait_recording(30)
-        camera.stop_recording()
-        # Write the terminating 0-length to the connection to let the
-        # server know we're done
-        connection.write(struct.pack('<L', 0))
+        i = 3
+        while i:
+            i = i-1
+            start = time.time()
+            camera.start_recording(output, format='mjpeg')
+            camera.wait_recording(10)
+            camera.stop_recording()
+            # Write the terminating 0-length to the connection to let the
+            # server know we're done
+            connection.write(struct.pack('<L', 0))
+            finish = time.time()
+            print('Sent %d images in %d seconds at %.2ffps' % (
+                output.count, finish-start, output.count / (finish-start)))
 finally:
     connection.close()
     server_socket.close()
-    finish = time.time()
-print('Sent %d images in %d seconds at %.2ffps' % (
-    output.count, finish-start, output.count / (finish-start)))
 
 
 # import io
