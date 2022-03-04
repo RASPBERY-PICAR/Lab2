@@ -31,7 +31,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
                     break
             # else:
             #     break
-    finally:
+    except:
         connection.close()
         client_socket.close()
 
