@@ -33,7 +33,9 @@ PORT = 65432          # The port used by the server
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.bind((HOST, PORT))
 server_socket.listen(0)
-connection = server_socket.accept()[0].makefile('wb')
+client, clientInfo = server_socket.accept()[0]
+connection = client.makefile('wb')
+print("server send to: ", clientInfo)
 try:
     output = SplitFrames(connection)
     with picamera.PiCamera(resolution='VGA', framerate=30) as camera:
@@ -49,11 +51,12 @@ try:
             # server know we're done
             connection.write(struct.pack('<L', 0))
             finish = time.time()
-            print('Sent %d images in %d seconds at %.2ffps' % (
-                output.count, finish-start, output.count / (finish-start)))
+
 finally:
     connection.close()
     server_socket.close()
+    print('Sent %d images in %d seconds at %.2ffps' % (
+        output.count, finish-start, output.count / (finish-start)))
 
 
 # import io
