@@ -32,8 +32,6 @@ function client(){
     client.on('end', () => {
         console.log('disconnected from server');
     });
-
-
 }
 
 function key_client(val) {
