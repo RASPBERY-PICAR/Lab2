@@ -42,7 +42,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
             if not START:
                 print("x")
-                if data == b"Start\r\n":
+                if data == b"Begin\r\n":
                     START = True
 
             if START:
