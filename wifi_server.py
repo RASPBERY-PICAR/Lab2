@@ -46,7 +46,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     START = True
 
             if START:
-                sleep(1)
+                # sleep(1)
                 status = picar.pi_read()
                 battery_status = status['battery']
                 cpu_temp = status['cpu_temperature']
