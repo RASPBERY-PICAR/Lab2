@@ -29,8 +29,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
                 cv2.imshow('image', image)
                 if cv2.waitKey(1) & 0xFF == ord('q'):
                     break
-            else:
-                break
+            # else:
+            #     break
     finally:
         connection.close()
         client_socket.close()
