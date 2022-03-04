@@ -1,4 +1,3 @@
-from lib2to3.pgen2.token import STAR
 import socket
 import picar_4wd as picar
 from time import sleep
