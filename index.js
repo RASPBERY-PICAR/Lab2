@@ -36,6 +36,21 @@ function client(){
 
 }
 
+function key_client(val) {
+    const net = require('net');
+    
+    const client = net.createConnection({ port: server_port, host: server_addr }, () => {
+        // 'connect' listener.
+        console.log('connected to server!');
+        // send the message
+        client.write(`${val}\r\n`);
+    });
+
+    client.on('end', () => {
+        console.log('disconnected from server');
+    });
+}
+
 // for detecting which key is been pressed w,a,s,d
 function updateKey(e) {
 
@@ -44,22 +59,22 @@ function updateKey(e) {
     if (e.keyCode == '87') {
         // up (w)
         document.getElementById("upArrow").style.color = "green";
-        send_data("87");
+        key_client('87');
     }
     else if (e.keyCode == '83') {
         // down (s)
         document.getElementById("downArrow").style.color = "green";
-        send_data("83");
+        key_client('83');
     }
     else if (e.keyCode == '65') {
         // left (a)
         document.getElementById("leftArrow").style.color = "green";
-        send_data("65");
+        key_client('65');
     }
     else if (e.keyCode == '68') {
         // right (d)
         document.getElementById("rightArrow").style.color = "green";
-        send_data("68");
+        key_client('68');
     }
 }
 
