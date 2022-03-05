@@ -11,7 +11,7 @@ PORT = 65432          # Port to listen on (non-privileged ports are > 1023)
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
     client_socket.connect((HOST, PORT))
     connection = client_socket.makefile('rb')
-
+    start_sign = False
     try:
         print("Streaming...")
         print("Press 'q' to exit")
@@ -22,16 +22,23 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
             first = stream_bytes.find(b'\xff\xd8')
             last = stream_bytes.find(b'\xff\xd9')
             if first != -1 and last != -1:
+                if not start_sign:
+                    start_sign = True
                 jpg = stream_bytes[first:last + 2]
                 stream_bytes = stream_bytes[last + 2:]
                 image = cv2.imdecode(np.frombuffer(
                     jpg, dtype=np.uint8), cv2.IMREAD_COLOR)
                 cv2.imshow('image', image)
                 if cv2.waitKey(1) & 0xFF == ord('q'):
+                    cv2.destroyAllWindows()
                     break
-            # else:
-            #     break
-    except:
+            else:
+                if start_sign:
+                    start_sign = False
+                    cv2.destroyAllWindows()
+                    continue
+
+    finally:
         connection.close()
         client_socket.close()
 

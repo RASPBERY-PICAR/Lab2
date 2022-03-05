@@ -4,6 +4,7 @@ import socket
 import struct
 import time
 import picamera
+import threading
 
 
 class SplitFrames(object):
@@ -52,7 +53,7 @@ try:
             connection.write(struct.pack('<L', 0))
             finish = time.time()
 
-except:
+finally:
     connection.close()
     server_socket.close()
     print('Sent %d images in %d seconds at %.2ffps' % (
