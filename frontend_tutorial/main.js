@@ -9,7 +9,6 @@ function createWindow () {
     height: 1000,
     webPreferences: {
       nodeIntegration: true,
-      contextIsolation: false,
       preload: path.join(__dirname, 'preload.js')
     }
   })
@@ -21,12 +20,18 @@ function createWindow () {
   // mainWindow.webContents.openDevTools()
 }
 
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   createWindow()
-  
+  // client()
+  // setInterval(function(){
+  //       // get image from python server
+  //       client();
+  //   }, 1000);
+  // console.log('123');
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.

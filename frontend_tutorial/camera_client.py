@@ -1,6 +1,7 @@
 # PC
 import numpy as np
 import cv2
+import time
 import socket
 import struct
 # from PIL import Image
@@ -31,11 +32,14 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
                 cv2.imshow('image', image)
                 if cv2.waitKey(1) & 0xFF == ord('q'):
                     cv2.destroyAllWindows()
+                    time.sleep(1)
                     break
             else:
                 if start_sign:
                     start_sign = False
+                    print("end")
                     cv2.destroyAllWindows()
+                    time.sleep(1)
                     continue
 
     finally:

@@ -1,10 +1,22 @@
 # pi
+from glob import glob
 import io
 import socket
 import struct
 import time
 import picamera
 import threading
+
+HOST = "172.20.10.3"  # IP address of your Raspberry PI
+PORT = 65432          # The port used by the server
+
+
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server_socket.bind((HOST, PORT))
+server_socket.listen(0)
+client, clientInfo = server_socket.accept()
+connection = client.makefile('wb')
+stop_sign = False
 
 
 class SplitFrames(object):
@@ -28,21 +40,17 @@ class SplitFrames(object):
         self.stream.write(buf)
 
 
-HOST = "172.20.10.3"  # IP address of your Raspberry PI
-PORT = 65432          # The port used by the server
-
-server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server_socket.bind((HOST, PORT))
-server_socket.listen(0)
-client, clientInfo = server_socket.accept()
-connection = client.makefile('wb')
-print("server send to: ", clientInfo)
-try:
+def streaming():
+    global server_socket
+    # connection = client.makefile('wb')
+    #
     output = SplitFrames(connection)
     with picamera.PiCamera(resolution='VGA', framerate=30) as camera:
         time.sleep(2)
         i = 3
         while i:
+            if stop_sign:
+                break
             i = i-1
             start = time.time()
             camera.start_recording(output, format='mjpeg')
@@ -53,11 +61,34 @@ try:
             connection.write(struct.pack('<L', 0))
             finish = time.time()
 
-finally:
-    connection.close()
-    server_socket.close()
-    print('Sent %d images in %d seconds at %.2ffps' % (
-        output.count, finish-start, output.count / (finish-start)))
+        connection.close()
+        # server_socket.close()
+        print('Sent %d images in %d seconds at %.2ffps' % (
+            output.count, finish-start, output.count / (finish-start)))
+
+
+def main():
+    global server_socket, client, connection, stop_sign
+    while 1:
+        data = client.recv(1024)
+        if data == b"start\r\n":
+            print(data)
+            stop_sign = False
+            connection = client.makefile('wb')
+            stream_thread = threading.Thread(
+                target=streaming, name='Thread', daemon=True)
+            stream_thread.start()
+        elif data == b"end\r\n":
+            stop_sign = True
+
+    print(stream_thread.name+' is alive ', stream_thread.isAlive())
+
+    return
+
+
+if __name__ == "__main__":
+
+    main()
 
 
 # import io
