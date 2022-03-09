@@ -3,7 +3,7 @@ document.onkeyup = resetKey;
 
 var server_port = 65432;
 // var server_addr = "172.20.10.3";   // the IP address of your Raspberry PI
-var server_addr = "73.45.190.122";   // the IP address of your Raspberry PI
+var server_addr = "192.168.0.35";   // the IP address of your Raspberry PI
 
 
 // function client(){

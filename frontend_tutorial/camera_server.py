@@ -8,7 +8,7 @@ import picamera
 import threading
 
 # HOST = "172.20.10.3"  # IP address of your Raspberry PI
-HOST = "73.45.190.122"
+HOST = "192.168.0.35"
 PORT = 65432          # The port used by the server
 
 
@@ -86,7 +86,7 @@ def main():
             stop_sign = True
             break
 
-    print(stream_thread.name+' is alive ', stream_thread.isAlive())
+    # print(stream_thread.name+' is alive ', stream_thread.isAlive())
 
     return
 

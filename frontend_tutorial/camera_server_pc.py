@@ -9,7 +9,7 @@ import numpy as np
 import cv2
 
 # HOST = "172.20.10.3"  # IP address of your Raspberry PI
-HOST = "73.45.190.122"
+HOST = "192.168.0.35"
 PORT = 65432          # The port used by the server
 
 
