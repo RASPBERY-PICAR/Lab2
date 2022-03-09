@@ -23,10 +23,11 @@ def send_f():
             break
         # send the encoded message (send in binary format)
         if (text == "start"):
+            client_socket.send(text.encode())
             sign = True
-        elif (text == "start"):
+            break
+        elif (text == "end"):
             sign = False
-        client_socket.send(text.encode())
 
 
 def recv_st():
