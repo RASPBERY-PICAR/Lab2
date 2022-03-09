@@ -16,5 +16,6 @@ while(1):
     k = cv2.waitKey(30) & 0xff
     if k == 27:
         break
+print(type(frame))
 cap.release()
 cv2.destroyAllWindows()

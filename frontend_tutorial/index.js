@@ -95,7 +95,7 @@ function resetKey(e) {
 // }, 1000);
 var flag;
 function test(){
-    document.getElementById("battery").innerHTML+=1
+    document.getElementById("battery").innerHTML=Number(document.getElementById("battery").innerHTML)+1;
 }
 
 // update data for every 50ms

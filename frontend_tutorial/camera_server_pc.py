@@ -1,11 +1,12 @@
 # pi
-from glob import glob
 import io
 import socket
 import struct
 import time
-import picamera
+from PIL import Image
 import threading
+import numpy as np
+import cv2
 
 # HOST = "172.20.10.3"  # IP address of your Raspberry PI
 HOST = "73.45.190.122"
@@ -20,53 +21,40 @@ connection = client.makefile('wb')
 stop_sign = False
 
 
-class SplitFrames(object):
-    def __init__(self, connection):
-        self.connection = connection
-        self.stream = io.BytesIO()
-        self.count = 0
-
-    def write(self, buf):
-        if buf.startswith(b'\xff\xd8'):
-            # Start of new frame; send the old one's length
-            # then the data
-            size = self.stream.tell()
-            if size > 0:
-                print(size, '\n')
-                self.connection.write(struct.pack('<L', size))
-                self.connection.flush()  # write data in buffer into file, clean buffer
-                self.stream.seek(0)  # return to index 0
-                self.connection.write(self.stream.read(size))  # send old frame
-                self.count += 1
-                self.stream.seek(0)  # return to index 0
-        self.stream.write(buf)  # store new frame
-
-
-def streaming():
+def pc_streaming():
     global server_socket, stop_sign
     # connection = client.makefile('wb')
     #
-    output = SplitFrames(connection)
-    with picamera.PiCamera(resolution='VGA', framerate=30) as camera:
+    with cv2.VideoCapture(0) as camera:
         time.sleep(2)
-        i = 3
-        while i:
+        # start = time.time()
+        while 1:
             if stop_sign:
                 break
-            i = i-1
-            start = time.time()
-            camera.start_recording(output, format='mjpeg')
-            camera.wait_recording(10)
-            camera.stop_recording()
+            success, image = camera.read()
+            cv2.imshow('frame', image)
+            k = cv2.waitKey(30) & 0xff
+            if k == 27:
+                break
+            r, buf = cv2.imencode(".jpg", image)
+            bytes_image = Image.fromarray(np.uint8(buf)).tobytes()
+            detect_face_image = io.BytesIO(bytes_image)
+            size = detect_face_image.tell()
+            if size > 0:
+                connection.write(b'\xff\xd8')
+                connection.write(struct.pack('<L', size))
+                connection.flush()  # write data in buffer into file, clean buffer
+                detect_face_image.seek(0)  # return to index 0
+                connection.write(detect_face_image.read(size))
+                connection.write(b'\xff\xd9')
+
             # Write the terminating 0-length to the connection to let the
             # server know we're done
             connection.write(struct.pack('<L', 0))
-            finish = time.time()
-        connection.write(b'\xff\xda')
+            # finish = time.time()
+        cv2.destroyAllWindows()
+        # connection.write(b'\xff\xda')
         connection.close()
-        # server_socket.close()
-        # print('Sent %d images in %d seconds at %.2ffps' % (
-        #     output.count, finish-start, output.count / (finish-start)))
 
 
 def main():
@@ -79,9 +67,10 @@ def main():
             stop_sign = False
             connection = client.makefile('wb')
             stream_thread = threading.Thread(
-                target=streaming, name='Thread', daemon=True)
+                target=pc_streaming, name='Thread', daemon=True)
             stream_thread.start()
         elif data == b"end\r\n":
+            print(data)
             stop_cnt += 1
             stop_sign = True
             break
