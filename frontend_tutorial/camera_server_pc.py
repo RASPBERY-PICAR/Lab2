@@ -65,19 +65,19 @@ def main():
         data = client.recv(1024)
         print(data)
         if data == b"start":
-            print(data)
+            # print(data)
             stop_sign = False
             connection = client.makefile('wb')
             stream_thread = threading.Thread(
                 target=pc_streaming, name='Thread', daemon=True)
             stream_thread.start()
         elif data == b"end":
-            print(data)
+            # print(data)
             stop_cnt += 1
             stop_sign = True
             break
 
-    print(stream_thread.name+' is alive ', stream_thread.isAlive())
+    # print(stream_thread.name+' is alive ', stream_thread.isAlive())
 
     return
 
