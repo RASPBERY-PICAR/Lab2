@@ -104,7 +104,7 @@ function update_data(){
 
         document.getElementById("update").value = "OFF"
         clearInterval(flag)
-        document.getElementById("battery").innerHTML = "";
+        document.getElementById("battery").innerHTML = 0;
     } else {
         // document.getElementById("battery").innerHTML = "2";
         document.getElementById("update").value = "ON"
