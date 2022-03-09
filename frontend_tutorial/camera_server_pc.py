@@ -27,16 +27,15 @@ def pc_streaming():
     #
     camera = cv2.VideoCapture(0)
 
-    time.sleep(2)
     # start = time.time()
     while 1:
         if stop_sign:
             break
         success, image = camera.read()
-        cv2.imshow('frame', image)
-        k = cv2.waitKey(30) & 0xff
-        if k == 27:
-            break
+        # cv2.imshow('frame', image)
+        # k = cv2.waitKey(30) & 0xff
+        # if k == 27:
+        #     break
         r, buf = cv2.imencode(".jpg", image)
         bytes_image = Image.fromarray(np.uint8(buf)).tobytes()
         detect_face_image = io.BytesIO(bytes_image)
