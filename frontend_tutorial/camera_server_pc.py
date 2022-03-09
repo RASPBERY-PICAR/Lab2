@@ -41,6 +41,7 @@ def pc_streaming():
         detect_face_image = io.BytesIO(bytes_image)
         size = detect_face_image.tell()
         if size > 0:
+            print(size, ' ')
             connection.write(b'\xff\xd8')
             connection.write(struct.pack('<L', size))
             connection.flush()  # write data in buffer into file, clean buffer

@@ -26,9 +26,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
             #     break
             first = stream_bytes.find(b'\xff\xd8')
             last = stream_bytes.find(b'\xff\xd9')
+            print('first:', first, 'last:', last,
+                  'last-first:', last-first, '\n')
             if first != -1 and last != -1:
-                print('first:', first, 'last:', last,
-                      'last-first:', last-first, '\n')
+
                 if not start_sign:
                     start_sign = True
                 jpg = stream_bytes[first:last + 2]
