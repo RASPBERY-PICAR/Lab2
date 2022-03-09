@@ -116,13 +116,13 @@ function client(msggg)
 
 function update_data(){
     if (document.getElementById("stream").value == "ON") {
-        document.getElementById("stream").innerHTML = "start";
-        document.getElementById("stream").value = "OFF";
-        client("start");
-    } else {
         document.getElementById("stream").innerHTML = "end";
+        document.getElementById("stream").value = "OFF";
+        client("end");
+    } else {
+        document.getElementById("stream").innerHTML = "start";
         document.getElementById("stream").value = "ON";
-        client("end");  
+        client("start");  
     }
 }
 
