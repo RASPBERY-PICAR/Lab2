@@ -7,7 +7,8 @@ import time
 import picamera
 import threading
 
-HOST = "172.20.10.3"  # IP address of your Raspberry PI
+# HOST = "172.20.10.3"  # IP address of your Raspberry PI
+HOST = "73.45.190.122"
 PORT = 65432          # The port used by the server
 
 
@@ -31,13 +32,14 @@ class SplitFrames(object):
             # then the data
             size = self.stream.tell()
             if size > 0:
+                print(size, '\n')
                 self.connection.write(struct.pack('<L', size))
-                self.connection.flush()
-                self.stream.seek(0)
-                self.connection.write(self.stream.read(size))
+                self.connection.flush()  # write data in buffer into file, clean buffer
+                self.stream.seek(0)  # return to index 0
+                self.connection.write(self.stream.read(size))  # send old frame
                 self.count += 1
-                self.stream.seek(0)
-        self.stream.write(buf)
+                self.stream.seek(0)  # return to index 0
+        self.stream.write(buf)  # store new frame
 
 
 def streaming():
@@ -60,7 +62,7 @@ def streaming():
             # server know we're done
             connection.write(struct.pack('<L', 0))
             finish = time.time()
-
+        connection.write(b'\xff\xda')
         connection.close()
         # server_socket.close()
         print('Sent %d images in %d seconds at %.2ffps' % (

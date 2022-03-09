@@ -12,6 +12,5 @@
   "devDependencies": {
     "electron": "^10.4.7"
   },
-  "dependencies": {},
   "description": ""
 }

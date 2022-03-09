@@ -2,37 +2,39 @@ document.onkeydown = updateKey;
 document.onkeyup = resetKey;
 
 var server_port = 65432;
-var server_addr = "172.20.10.3";   // the IP address of your Raspberry PI
+// var server_addr = "172.20.10.3";   // the IP address of your Raspberry PI
+var server_addr = "73.45.190.122";   // the IP address of your Raspberry PI
 
-function client(){
+
+// function client(){
     
-    const net = require('net');
-    var input = document.getElementById("message").value;
+//     const net = require('net');
+//     var input = document.getElementById("message").value;
 
-    const client = net.createConnection({ port: server_port, host: server_addr }, () => {
-        // 'connect' listener.
-        console.log('connected to server!');
-        // send the message
-        client.write(`${input}\r\n`);
-    });
+//     const client = net.createConnection({ port: server_port, host: server_addr }, () => {
+//         // 'connect' listener.
+//         console.log('connected to server!');
+//         // send the message
+//         client.write(`${input}\r\n`);
+//     });
     
-    // get the data from the server
-    client.on('data', (data) => {
-        var s_list = data.toString().split(",");
-        var b_status = s_list[0];
-        var t_status = s_list[1];
-        // document.getElementById("bluetooth").innerHTML = data;
-        document.getElementById("battery").innerHTML = b_status;
-        document.getElementById("temperature").innerHTML = t_status;
-        // console.log(data.toString());
-        client.end();
-        client.destroy();
-    });
+//     // get the data from the server
+//     client.on('data', (data) => {
+//         var s_list = data.toString().split(",");
+//         var b_status = s_list[0];
+//         var t_status = s_list[1];
+//         // document.getElementById("bluetooth").innerHTML = data;
+//         document.getElementById("battery").innerHTML = b_status;
+//         document.getElementById("temperature").innerHTML = t_status;
+//         // console.log(data.toString());
+//         client.end();
+//         client.destroy();
+//     });
 
-    client.on('end', () => {
-        console.log('disconnected from server');
-    });
-}
+//     client.on('end', () => {
+//         console.log('disconnected from server');
+//     });
+// }
 
 function key_client(val) {
     const net = require('net');
@@ -107,6 +109,39 @@ function update_data(){
         // document.getElementById("battery").innerHTML = "2";
         document.getElementById("update").value = "ON"
         flag=setInterval(function(){test();}, 1000);
+    }
+    
+    // document.getElementById("battery").innerHTML = "1";
+    // setInterval(function(){
+    //     // get image from python server
+    //     client();
+    // }, 1000);
+}
+
+
+function clinet_send(data)
+{
+    const net = require('net');
+
+    const client = net.createConnection({ port: server_port, host: server_addr }, () => {
+        // 'connect' listener.
+        console.log('connected to server!');
+        // send the message
+        client.write(`${data}\r\n`);
+    });
+    client.on('end', () => {
+        console.log('disconnected from server');
+    });
+}
+
+function send_data(){
+    if (document.getElementById("stream").value == "ON") {
+        document.getElementById("stream").value = "OFF";
+        clinet_send("start")
+    } else {
+        // document.getElementById("battery").innerHTML = "2";
+        document.getElementById("stream").value = "ON";
+        clinet_send("end")
         
     }
     
