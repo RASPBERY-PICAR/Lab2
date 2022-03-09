@@ -1,4 +1,5 @@
 # pi
+from ctypes import sizeof
 import io
 import socket
 import struct
@@ -13,35 +14,43 @@ HOST = "192.168.0.35"
 PORT = 65432          # The port used by the server
 
 
-server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server_socket.bind((HOST, PORT))
-server_socket.listen(0)
-client, clientInfo = server_socket.accept()
-connection = client.makefile('wb')
-stop_sign = False
+# server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+# server_socket.bind((HOST, PORT))
+# server_socket.listen(0)
+# client, clientInfo = server_socket.accept()
+# connection = client.makefile('wb')
+# stop_sign = False
 
 
 def pc_streaming():
-    global server_socket, stop_sign
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.bind((HOST, PORT))
+    server_socket.listen(0)
+    client, clientInfo = server_socket.accept()
+    connection = client.makefile('wb')
+    stop_sign = False
+
+    # global server_socket, stop_sign
     # connection = client.makefile('wb')
     #
     camera = cv2.VideoCapture(0)
-
+    print(camera)
     # start = time.time()
     while 1:
         # if stop_sign:
         #     break
         success, image = camera.read()
-        # cv2.imshow('frame', image)
-        # k = cv2.waitKey(30) & 0xff
-        # if k == 27:
-        #     break
+        cv2.imshow('frame', image)
+        k = cv2.waitKey(30) & 0xff
+        if k == ord('q'):
+            break
         r, buf = cv2.imencode(".jpg", image)
         bytes_image = Image.fromarray(np.uint8(buf)).tobytes()
         detect_face_image = io.BytesIO(bytes_image)
+        print(detect_face_image.getvalue())
         size = detect_face_image.tell()
-        print(size, 'x')
-        if size > 0:
+        # print(size, 'x')
+        if 1:
             connection.write(b'\xff\xd8')
             connection.write(struct.pack('<L', size))
             connection.flush()  # write data in buffer into file, clean buffer
@@ -86,7 +95,6 @@ def main():
 
 
 if __name__ == "__main__":
-
     pc_streaming()
 
 
