@@ -36,20 +36,20 @@ var server_addr = "192.168.0.35";   // the IP address of your Raspberry PI
 //     });
 // }
 
-function key_client(val) {
-    const net = require('net');
+// function key_client(val) {
+//     const net = require('net');
     
-    const client = net.createConnection({ port: server_port, host: server_addr }, () => {
-        // 'connect' listener.
-        console.log('connected to server!');
-        // send the message
-        client.write(`${val}\r\n`);
-    });
+//     const client = net.createConnection({ port: server_port, host: server_addr }, () => {
+//         // 'connect' listener.
+//         console.log('connected to server!');
+//         // send the message
+//         client.write(`${val}\r\n`);
+//     });
 
-    client.on('end', () => {
-        console.log('disconnected from server');
-    });
-}
+//     client.on('end', () => {
+//         console.log('disconnected from server');
+//     });
+// }
 
 // for detecting which key is been pressed w,a,s,d
 function updateKey(e) {
@@ -98,56 +98,52 @@ function test(){
     document.getElementById("battery").innerHTML=Number(document.getElementById("battery").innerHTML)+1;
 }
 
-// update data for every 50ms
-function update_data(){
-    if (document.getElementById("update").value == "ON") {
-
-        document.getElementById("update").value = "OFF"
-        clearInterval(flag)
-        document.getElementById("battery").innerHTML = 0;
-    } else {
-        // document.getElementById("battery").innerHTML = "2";
-        document.getElementById("update").value = "ON"
-        flag=setInterval(function(){test();}, 1000);
-    }
-    
-    // document.getElementById("battery").innerHTML = "1";
-    // setInterval(function(){
-    //     // get image from python server
-    //     client();
-    // }, 1000);
-}
-
-
 function clinet_send(data)
 {
     const net = require('net');
-
     const client = net.createConnection({ port: server_port, host: server_addr }, () => {
         // 'connect' listener.
         console.log('connected to server!');
         // send the message
         client.write(`${data}\r\n`);
+        document.getElementById("sign").innerHTML = data;
     });
     client.on('end', () => {
         console.log('disconnected from server');
     });
 }
 
-function send_data(){
+function update_data(){
     if (document.getElementById("stream").value == "ON") {
+        document.getElementById("stream").innerHTML = "OFF";
         document.getElementById("stream").value = "OFF";
-        clinet_send("start")
+        clinet_send("start");
     } else {
-        // document.getElementById("battery").innerHTML = "2";
+        document.getElementById("stream").innerHTML = "ON";
         document.getElementById("stream").value = "ON";
-        clinet_send("end")
+        clinet_send("end");
         
     }
-    
-    // document.getElementById("battery").innerHTML = "1";
-    // setInterval(function(){
-    //     // get image from python server
-    //     client();
-    // }, 1000);
 }
+
+// // update data for every 50ms
+// function update_data(){
+//     console.log('update_data');
+//     if (document.getElementById("update").value == "ON") {
+
+//         document.getElementById("update").value = "OFF"
+//         clearInterval(flag)
+//         document.getElementById("battery").innerHTML = 0;
+//     } else {
+//         // document.getElementById("battery").innerHTML = "2";
+//         document.getElementById("update").value = "ON"
+//         flag=setInterval(function(){test();}, 1000);
+//     }
+    
+//     // document.getElementById("battery").innerHTML = "1";
+//     // setInterval(function(){
+//     //     // get image from python server
+//     //     client();
+//     // }, 1000);
+// }
+
