@@ -25,36 +25,38 @@ def pc_streaming():
     global server_socket, stop_sign
     # connection = client.makefile('wb')
     #
-    with cv2.VideoCapture(0) as camera:
-        time.sleep(2)
-        # start = time.time()
-        while 1:
-            if stop_sign:
-                break
-            success, image = camera.read()
-            cv2.imshow('frame', image)
-            k = cv2.waitKey(30) & 0xff
-            if k == 27:
-                break
-            r, buf = cv2.imencode(".jpg", image)
-            bytes_image = Image.fromarray(np.uint8(buf)).tobytes()
-            detect_face_image = io.BytesIO(bytes_image)
-            size = detect_face_image.tell()
-            if size > 0:
-                connection.write(b'\xff\xd8')
-                connection.write(struct.pack('<L', size))
-                connection.flush()  # write data in buffer into file, clean buffer
-                detect_face_image.seek(0)  # return to index 0
-                connection.write(detect_face_image.read(size))
-                connection.write(b'\xff\xd9')
+    camera = cv2.VideoCapture(0)
 
-            # Write the terminating 0-length to the connection to let the
-            # server know we're done
-            connection.write(struct.pack('<L', 0))
-            # finish = time.time()
-        cv2.destroyAllWindows()
-        # connection.write(b'\xff\xda')
-        connection.close()
+    time.sleep(2)
+    # start = time.time()
+    while 1:
+        if stop_sign:
+            break
+        success, image = camera.read()
+        cv2.imshow('frame', image)
+        k = cv2.waitKey(30) & 0xff
+        if k == 27:
+            break
+        r, buf = cv2.imencode(".jpg", image)
+        bytes_image = Image.fromarray(np.uint8(buf)).tobytes()
+        detect_face_image = io.BytesIO(bytes_image)
+        size = detect_face_image.tell()
+        if size > 0:
+            connection.write(b'\xff\xd8')
+            connection.write(struct.pack('<L', size))
+            connection.flush()  # write data in buffer into file, clean buffer
+            detect_face_image.seek(0)  # return to index 0
+            connection.write(detect_face_image.read(size))
+            connection.write(b'\xff\xd9')
+
+        # Write the terminating 0-length to the connection to let the
+        # server know we're done
+        connection.write(struct.pack('<L', 0))
+        # finish = time.time()
+    cv2.destroyAllWindows()
+    camera.release()
+    # connection.write(b'\xff\xda')
+    connection.close()
 
 
 def main():
