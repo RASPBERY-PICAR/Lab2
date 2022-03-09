@@ -66,9 +66,9 @@ def main():
         time.sleep(0.1)
         print(1)
         data = client.recv(1024)
-        print(data)
-        if data == b"start":
-            # print(data)
+        # print(data)
+        if data == b'start':
+            print(data)
             stop_sign = False
             connection = client.makefile('wb')
             stream_thread = threading.Thread(

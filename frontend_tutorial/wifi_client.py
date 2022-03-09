@@ -34,7 +34,9 @@ def recv_st():
     stream_thread = threading.Thread(
         target=send_f, name='Thread', daemon=True)
     stream_thread.start()
-    while sign:
+    while 1:
+        if not sign:
+            continue
         connection = client_socket.makefile('rb')
         start_sign = False
         try:
@@ -43,6 +45,8 @@ def recv_st():
             # need bytes here
             stream_bytes = b' '
             while True:
+                if not sign:
+                    break
                 stream_bytes += connection.read(1024)
                 # stop = stream_bytes.find(b'\xff\xda')
                 # if (stop == -1):
