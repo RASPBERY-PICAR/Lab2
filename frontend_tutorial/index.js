@@ -98,15 +98,14 @@ function test(){
     document.getElementById("battery").innerHTML=Number(document.getElementById("battery").innerHTML)+1;
 }
 
-function client()
+function client(msggg)
 {
-    var mmss=document.getElementById("stream").innerHTML;
     const net = require('net');
     const client = net.createConnection({ port: server_port, host: server_addr }, () => {
         // 'connect' listener.
         console.log('connected to server!');
         // send the message
-        client.write(`${mmss}`);
+        client.write(`${msggg}`);
         test();
         // document.getElementById("sign").innerHTML = mmss;
     });
@@ -119,11 +118,11 @@ function update_data(){
     if (document.getElementById("stream").value == "ON") {
         document.getElementById("stream").innerHTML = "start";
         document.getElementById("stream").value = "OFF";
-        client();
+        client("start");
     } else {
         document.getElementById("stream").innerHTML = "end";
         document.getElementById("stream").value = "ON";
-        client();  
+        client("end");  
     }
 }
 

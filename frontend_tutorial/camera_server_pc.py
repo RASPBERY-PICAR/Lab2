@@ -75,7 +75,7 @@ def main():
             # print(data)
             stop_cnt += 1
             stop_sign = True
-            break
+            continue
 
     # print(stream_thread.name+' is alive ', stream_thread.isAlive())
 
