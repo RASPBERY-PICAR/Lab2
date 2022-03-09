@@ -62,14 +62,14 @@ def main():
     stop_cnt = 0
     while (stop_cnt < 2):
         data = client.recv(1024)
-        if data == b"start\r\n":
+        if data == b"start":
             print(data)
             stop_sign = False
             connection = client.makefile('wb')
             stream_thread = threading.Thread(
                 target=pc_streaming, name='Thread', daemon=True)
             stream_thread.start()
-        elif data == b"end\r\n":
+        elif data == b"end":
             print(data)
             stop_cnt += 1
             stop_sign = True

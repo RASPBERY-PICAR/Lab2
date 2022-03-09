@@ -98,15 +98,18 @@ function test(){
     document.getElementById("battery").innerHTML=Number(document.getElementById("battery").innerHTML)+1;
 }
 
-function clinet_send(data)
+function client()
 {
+    test();
+    var mmss=document.getElementById("stream").innerHTML;
     const net = require('net');
     const client = net.createConnection({ port: server_port, host: server_addr }, () => {
         // 'connect' listener.
         console.log('connected to server!');
         // send the message
-        client.write(`${data}\r\n`);
-        document.getElementById("sign").innerHTML = data;
+        client.write(`${mmss}`);
+        test();
+        // document.getElementById("sign").innerHTML = mmss;
     });
     client.on('end', () => {
         console.log('disconnected from server');
@@ -115,14 +118,13 @@ function clinet_send(data)
 
 function update_data(){
     if (document.getElementById("stream").value == "ON") {
-        document.getElementById("stream").innerHTML = "OFF";
+        document.getElementById("stream").innerHTML = "start";
         document.getElementById("stream").value = "OFF";
-        clinet_send("start");
+        client();
     } else {
-        document.getElementById("stream").innerHTML = "ON";
+        document.getElementById("stream").innerHTML = "end";
         document.getElementById("stream").value = "ON";
-        clinet_send("end");
-        
+        client();  
     }
 }
 
