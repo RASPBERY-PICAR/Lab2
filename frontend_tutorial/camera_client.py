@@ -18,7 +18,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
         print("Streaming...")
         print("Press 'q' to exit")
         # need bytes here
-        # stream_bytes = b' '
+        stream_bytes = b' '
         while True:
             stream_bytes += connection.read(1024)
             # stop = stream_bytes.find(b'\xff\xda')
@@ -28,7 +28,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
             last = stream_bytes.find(b'\xff\xd9')
             print('first:', first, 'last:', last,
                   'last-first:', last-first, '\n')
-            if first != -1 and last != -1:
+            if (first != -1 and last != -1):
 
                 if not start_sign:
                     start_sign = True
