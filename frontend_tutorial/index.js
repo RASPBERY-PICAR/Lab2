@@ -100,7 +100,6 @@ function test(){
 
 function client()
 {
-    test();
     var mmss=document.getElementById("stream").innerHTML;
     const net = require('net');
     const client = net.createConnection({ port: server_port, host: server_addr }, () => {

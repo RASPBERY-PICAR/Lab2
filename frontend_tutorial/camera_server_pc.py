@@ -61,7 +61,9 @@ def main():
     global server_socket, client, connection, stop_sign
     stop_cnt = 0
     while (stop_cnt < 2):
+        time.sleep(1)
         data = client.recv(1024)
+        print(data)
         if data == b"start":
             print(data)
             stop_sign = False
