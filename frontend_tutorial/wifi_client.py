@@ -31,13 +31,26 @@ def send_f():
 
 
 def recv_st():
+    # global sign
+    # stream_thread = threading.Thread(
+    #     target=send_f, name='Thread', daemon=True)
+    # stream_thread.start()
     global sign
-    stream_thread = threading.Thread(
-        target=send_f, name='Thread', daemon=True)
-    stream_thread.start()
+    # while 1:
+    #     # Note change to the old (Python 2) raw_input
+    #     text = input("Enter your message: ")
+    #     if (text == "quit"):
+    #         break
+    #     # send the encoded message (send in binary format)
+    #     if (text == "start"):
+    #         client_socket.send(text.encode())
+    #         sign = True
+    #         break
+    #     elif (text == "end"):
+    #         sign = False
     while 1:
-        if not sign:
-            continue
+        # if not sign:
+        #     continue
         connection = client_socket.makefile('rb')
         start_sign = False
         try:
@@ -46,8 +59,8 @@ def recv_st():
             # need bytes here
             stream_bytes = b' '
             while True:
-                if not sign:
-                    break
+                # if not sign:
+                #     break
                 stream_bytes += connection.read(1024)
                 # stop = stream_bytes.find(b'\xff\xda')
                 # if (stop == -1):

@@ -29,8 +29,8 @@ def pc_streaming():
 
     # start = time.time()
     while 1:
-        if stop_sign:
-            break
+        # if stop_sign:
+        #     break
         success, image = camera.read()
         # cv2.imshow('frame', image)
         # k = cv2.waitKey(30) & 0xff
@@ -87,7 +87,7 @@ def main():
 
 if __name__ == "__main__":
 
-    main()
+    pc_streaming()
 
 
 # import io
