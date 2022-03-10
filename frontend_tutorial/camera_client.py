@@ -35,7 +35,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
                 #     jpg, dtype=np.uint8), cv2.COLOR_RGB2BGR)
                 image = cv2.imdecode(np.frombuffer(
                     jpg, dtype=np.uint8), cv2.IMREAD_COLOR)
-                # image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+                image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
                 cv2.imshow('image', image)
                 if cv2.waitKey(30) & 0xFF == ord('q'):
                     cv2.destroyAllWindows()

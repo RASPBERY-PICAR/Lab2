@@ -44,6 +44,7 @@ try:
         camera.stop_recording()
         # Write the terminating 0-length to the connection to let the
         # server know we're done
+        connection.write(b"end")
         connection.write(struct.pack('<L', 0))
 finally:
     connection.close()

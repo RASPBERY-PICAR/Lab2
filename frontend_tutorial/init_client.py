@@ -19,6 +19,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
         stream_bytes = b' '
         while True:
             stream_bytes += connection.read(1024)
+            end = stream_bytes.find(b"end")
+            if end != -1:
+                break
             first = stream_bytes.find(b'\xff\xd8')
             last = stream_bytes.find(b'\xff\xd9')
             if first != -1 and last != -1:
@@ -26,7 +29,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
                 stream_bytes = stream_bytes[last + 2:]
                 image = cv2.imdecode(np.frombuffer(
                     jpg, dtype=np.uint8), cv2.IMREAD_COLOR)
-                # image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+                image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
                 cv2.imshow('image', image)
                 if cv2.waitKey(1) & 0xFF == ord('q'):
                     break
