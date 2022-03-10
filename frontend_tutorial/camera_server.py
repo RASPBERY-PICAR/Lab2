@@ -27,7 +27,6 @@ class SplitFrames(object):
             # then the data
             size = self.stream.tell()
             if size > 0:
-                print(size, '\n')
                 self.connection.write(struct.pack('<L', size))
                 self.connection.flush()  # write data in buffer into file, clean buffer
                 self.stream.seek(0)  # return to index 0
@@ -52,12 +51,12 @@ def streaming():
         output = SplitFrames(connection)
         with picamera.PiCamera(resolution='VGA', framerate=30) as camera:
             time.sleep(2)
-            # start = time.time()
+            start = time.time()
             while True:
                 if stop_sign:
                     break
                 camera.start_recording(output, format='mjpeg')
-                camera.wait_recording(30)
+                camera.wait_recording(10)
                 camera.stop_recording()
                 # Write the terminating 0-length to the connection to let the
                 # server know we're done
@@ -66,9 +65,9 @@ def streaming():
         connection.close()
         client.close()
         server_socket.close()
-        # finish = time.time()
-        # print('Sent %d images in %d seconds at %.2ffps' % (
-        #     output.count, finish-start, output.count / (finish-start)))
+        finish = time.time()
+        print('Sent %d images in %d seconds at %.2ffps' % (
+            output.count, finish-start, output.count / (finish-start)))
 
     # with picamera.PiCamera(resolution='VGA', framerate=30) as camera:
     #     time.sleep(2)
