@@ -1,11 +1,9 @@
 # pi
-from glob import glob
+# from glob import glob
 import io
 import socket
 import struct
 import time
-
-from pyrsistent import T
 import picamera
 import threading
 import bluetooth
