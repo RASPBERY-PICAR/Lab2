@@ -32,7 +32,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
             # Rewind the stream, open it as an image with PIL and do some
             # processing on it
             image_stream.seek(0)
-            image = Image.open(image_stream)
+            image = np.array(Image.open(image_stream))
             cv2.imshow('image', image)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
