@@ -112,6 +112,7 @@ def main():
                 print(data, '\n')
                 client_bt.send(data)  # Echo back to client
             if data == b"start":
+                stop_sign = False
                 stream_thread = threading.Thread(
                     target=streaming, name='Thread', daemon=True)
                 stream_thread.start()
