@@ -38,17 +38,19 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
                 # image = cv2.cvtColor(image, cv2.IMREAD_COLOR)
                 cv2.imshow('image', image)
                 if cv2.waitKey(30) & 0xFF == ord('q'):
-                    cv2.destroyAllWindows()
-                    time.sleep(0.5)
+                    print('q')
+
+                    # time.sleep(0.5)
                     break
             else:
                 if start_sign:
                     start_sign = False
                     print("end")
                     cv2.destroyAllWindows()
-                    time.sleep(0.5)
+                    # time.sleep(0.5)
                     continue
 
     finally:
+        # cv2.destroyAllWindows()
         connection.close()
         client_socket.close()
