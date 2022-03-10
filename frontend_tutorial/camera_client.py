@@ -72,6 +72,8 @@ def recv_st():
                 # processing on it
                 image_stream.seek(0)
                 image = np.array(Image.open(image_stream))
+                # b, g, r = cv2.split(image)
+                # image = cv2.merge([r, g, b])
                 cv2.imshow('image', image)
                 if cv2.waitKey(1) & 0xFF == ord('q'):
                     break
