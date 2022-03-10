@@ -33,7 +33,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
             # processing on it
             image_stream.seek(0)
             image = Image.open(image_stream)
-
+            cv2.imshow('image', image)
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
             # stream_bytes += connection.read(1024)
             # end = stream_bytes.find(b"end")
             # if end != -1:
