@@ -26,7 +26,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
                 stream_bytes = stream_bytes[last + 2:]
                 image = cv2.imdecode(np.frombuffer(
                     jpg, dtype=np.uint8), cv2.IMREAD_COLOR)
-                image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+                # image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
                 cv2.imshow('image', image)
                 if cv2.waitKey(1) & 0xFF == ord('q'):
                     break

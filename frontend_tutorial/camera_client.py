@@ -27,7 +27,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
             # print('first:', first, 'last:', last,
             #       'last-first:', last-first, '\n')
             if (first != -1 and last != -1):
-
                 if not start_sign:
                     start_sign = True
                 jpg = stream_bytes[first:last + 2]
@@ -36,7 +35,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
                 #     jpg, dtype=np.uint8), cv2.COLOR_RGB2BGR)
                 image = cv2.imdecode(np.frombuffer(
                     jpg, dtype=np.uint8), cv2.IMREAD_COLOR)
-                image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+                # image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
                 cv2.imshow('image', image)
                 if cv2.waitKey(30) & 0xFF == ord('q'):
                     cv2.destroyAllWindows()
