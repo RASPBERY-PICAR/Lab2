@@ -4,19 +4,16 @@ import io
 import socket
 import struct
 import time
+
+from pyrsistent import T
 import picamera
 import threading
+import bluetooth
 
-# HOST = "172.20.10.3"  # IP address of your Raspberry PI
-HOST = "192.168.0.35"
+HOST = "172.20.10.3"  # IP address of your Raspberry PI
+# HOST = "192.168.0.35"
 PORT = 65432          # The port used by the server
 
-
-server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server_socket.bind((HOST, PORT))
-server_socket.listen(0)
-client, clientInfo = server_socket.accept()
-connection = client.makefile('wb')
 stop_sign = False
 
 
@@ -43,48 +40,110 @@ class SplitFrames(object):
 
 
 def streaming():
-    global server_socket, stop_sign
+    global stop_sign
     # connection = client.makefile('wb')
     #
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.bind((HOST, PORT))
+    server_socket.listen(0)
+    client, clientInfo = server_socket.accept()
+    connection = client.makefile('wb')
     output = SplitFrames(connection)
-    with picamera.PiCamera(resolution='VGA', framerate=30) as camera:
-        time.sleep(2)
-        i = 3
-        while i:
-            if stop_sign:
-                break
-            i = i-1
-            start = time.time()
-            camera.start_recording(output, format='mjpeg')
-            camera.wait_recording(10)
-            camera.stop_recording()
-            # Write the terminating 0-length to the connection to let the
-            # server know we're done
-            connection.write(struct.pack('<L', 0))
-            finish = time.time()
-        connection.write(b'\xff\xda')
+    try:
+        output = SplitFrames(connection)
+        with picamera.PiCamera(resolution='VGA', framerate=30) as camera:
+            time.sleep(2)
+            # start = time.time()
+            while True:
+                if stop_sign:
+                    break
+                camera.start_recording(output, format='mjpeg')
+                camera.wait_recording(30)
+                camera.stop_recording()
+                # Write the terminating 0-length to the connection to let the
+                # server know we're done
+                connection.write(struct.pack('<L', 0))
+    finally:
         connection.close()
-        # server_socket.close()
+        client.close()
+        server_socket.close()
+        # finish = time.time()
         # print('Sent %d images in %d seconds at %.2ffps' % (
         #     output.count, finish-start, output.count / (finish-start)))
 
+    # with picamera.PiCamera(resolution='VGA', framerate=30) as camera:
+    #     time.sleep(2)
+    #     i = 3
+    #     while i:
+    #         if stop_sign:
+    #             break
+    #         i = i-1
+    #         start = time.time()
+    #         camera.start_recording(output, format='mjpeg')
+    #         camera.wait_recording(10)
+    #         camera.stop_recording()
+    #         # Write the terminating 0-length to the connection to let the
+    #         # server know we're done
+    #         connection.write(struct.pack('<L', 0))
+    #         finish = time.time()
+    #     connection.write(b'\xff\xda')
+    #     connection.close()
+    #     # server_socket.close()
+    #     # print('Sent %d images in %d seconds at %.2ffps' % (
+    #     #     output.count, finish-start, output.count / (finish-start)))
+
 
 def main():
-    global server_socket, client, connection, stop_sign
-    stop_cnt = 0
-    while (stop_cnt < 2):
-        data = client.recv(1024)
-        if data == b"start\r\n":
+    global stop_sign
+    # The address of Raspberry PI Bluetooth adapter on the server. The server might have multiple Bluetooth adapters.
+    hostMACAddress = "E4:5F:01:42:E0:84"
+    port = 0
+    backlog = 1
+    size = 1024
+    server_bt = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+    server_bt.bind((hostMACAddress, port))
+    server_bt.listen(backlog)
+    print("listening on port ", port)
+    try:
+        client_bt, client_bt_Info = server_bt.accept()
+        while 1:
+            print("server recv from: ", client_bt_Info)
+            data = client_bt.recv(size)
             print(data)
-            stop_sign = False
-            connection = client.makefile('wb')
-            stream_thread = threading.Thread(
-                target=streaming, name='Thread', daemon=True)
-            stream_thread.start()
-        elif data == b"end\r\n":
-            stop_cnt += 1
-            stop_sign = True
-            break
+            if data:
+                print(data, '\n')
+                client_bt.send(data)  # Echo back to client
+            if data == b"start":
+                stream_thread = threading.Thread(
+                    target=streaming, name='Thread', daemon=True)
+                stream_thread.start()
+            # client.send(data) # Echo back to client
+            elif data == b"end":
+                stop_sign = True
+                continue
+            elif data == b"quit":
+                stop_sign = True
+                break
+
+    except:
+        print("Closing socket")
+        client_bt.close()
+        server_bt.close()
+
+    # stop_cnt = 0
+    # while (stop_cnt < 2):
+    #     data = client.recv(1024)
+    #     if data == b"start\r\n":
+    #         print(data)
+    #         stop_sign = False
+    #         connection = client.makefile('wb')
+    #         stream_thread = threading.Thread(
+    #             target=streaming, name='Thread', daemon=True)
+    #         stream_thread.start()
+    #     elif data == b"end\r\n":
+    #         stop_cnt += 1
+    #         stop_sign = True
+    #         break
 
     # print(stream_thread.name+' is alive ', stream_thread.isAlive())
 

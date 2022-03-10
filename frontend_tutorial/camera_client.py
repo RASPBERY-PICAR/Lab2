@@ -6,8 +6,8 @@ import socket
 import struct
 # from PIL import Image
 
-# HOST = "172.20.10.3"  # IP address of your Raspberry PI
-HOST = "192.168.0.35"
+HOST = "172.20.10.3"  # IP address of your Raspberry PI
+# HOST = "192.168.0.35"
 PORT = 65432          # Port to listen on (non-privileged ports are > 1023)
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
@@ -15,8 +15,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
     connection = client_socket.makefile('rb')
     start_sign = False
     try:
-        print("Streaming...")
-        print("Press 'q' to exit")
+        print("Streaming...Press 'q' to exit")
         # need bytes here
         stream_bytes = b' '
         while True:
