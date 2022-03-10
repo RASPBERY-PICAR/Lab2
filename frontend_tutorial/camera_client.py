@@ -61,7 +61,7 @@ def recv_st():
                 image_len = struct.unpack(
                     '<L', connection.read(struct.calcsize('<L')))[0]
                 if not image_len:
-                    break
+                    continue
                 # Construct a stream to hold the image data and read the image
                 # data from the connection
                 image_stream = io.BytesIO()
