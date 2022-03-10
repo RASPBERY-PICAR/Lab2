@@ -50,6 +50,7 @@ def recv_st():
     #         break
     #     elif sign == b'00':
     #         continue
+    # need while
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
         client_socket.connect((HOST, PORT))
         connection = client_socket.makefile('rb')
@@ -61,7 +62,8 @@ def recv_st():
                 image_len = struct.unpack(
                     '<L', connection.read(struct.calcsize('<L')))[0]
                 if not image_len:
-                    continue
+                    # continue
+                    break
                 # Construct a stream to hold the image data and read the image
                 # data from the connection
                 image_stream = io.BytesIO()

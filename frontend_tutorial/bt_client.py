@@ -1,4 +1,5 @@
 import bluetooth
+import os
 
 # The address of Raspberry PI Bluetooth adapter on the server.
 host = "E4:5F:01:42:E0:84"
@@ -12,6 +13,10 @@ while 1:
     print('sent', text, '\n')
     if text == "quit":
         break
+    elif (text == "start"):
+        str = ('python3 camera_client.py')
+        os.system(str)
+    # elif (text == "end"):
 
     data = sock.recv(1024)
     print("recv from server: ", data, '\n')
