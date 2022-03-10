@@ -96,7 +96,7 @@ def main():
     global stop_sign
     # The address of Raspberry PI Bluetooth adapter on the server. The server might have multiple Bluetooth adapters.
     hostMACAddress = "E4:5F:01:42:E0:84"
-    port = 1
+    port = 0
     backlog = 1
     size = 1024
     server_bt = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
