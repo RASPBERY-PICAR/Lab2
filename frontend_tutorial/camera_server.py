@@ -45,6 +45,7 @@ def streaming():
     server_socket.bind((HOST, PORT))
     server_socket.listen(0)
     client, clientInfo = server_socket.accept()
+    print("server recv from: ", clientInfo)
     connection = client.makefile('wb')
     output = SplitFrames(connection)
     try:
