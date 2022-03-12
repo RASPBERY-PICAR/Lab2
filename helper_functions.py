@@ -34,9 +34,8 @@ def forward_grid(n=1):
     fc.stop()
 
 
-
 def backward_grid(n=1):
-    fc.backward(100)
+    fc.backward(20)
     for i in range(n):
         time.sleep(0.10)
     fc.stop()

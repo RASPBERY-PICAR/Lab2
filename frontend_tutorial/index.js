@@ -1,10 +1,26 @@
-document.onkeydown = updateKey;
-document.onkeyup = resetKey;
+var flag=null;
+
+document.onkeydown =period_up;
+document.onkeyup = period_reset;
 
 var server_port = 65432;
 var server_addr = "172.20.10.3";   // the IP address of your Raspberry PI
 // var server_addr = "192.168.0.35";
 
+function period_up(e){
+    if (flag == null) {
+        updateKey(e);
+        flag=setInterval(function(){updateKey(e);}, 1000);
+    }
+}
+
+function period_reset(e){
+    if (flag != null) {
+        clearInterval(flag);
+        flag=null
+    }
+    resetKey(e);
+}
 
 // function client(){
     
@@ -55,26 +71,26 @@ var server_addr = "172.20.10.3";   // the IP address of your Raspberry PI
 function updateKey(e) {
 
     e = e || window.event;
-
+    document.getElementById("battery").innerHTML+=1;
     if (e.keyCode == '87') {
         // up (w)
         document.getElementById("upArrow").style.color = "green";
-        key_client('87');
+        // key_client('87');
     }
     else if (e.keyCode == '83') {
         // down (s)
         document.getElementById("downArrow").style.color = "green";
-        key_client('83');
+        // key_client('83');
     }
     else if (e.keyCode == '65') {
         // left (a)
         document.getElementById("leftArrow").style.color = "green";
-        key_client('65');
+        // key_client('65');
     }
     else if (e.keyCode == '68') {
         // right (d)
         document.getElementById("rightArrow").style.color = "green";
-        key_client('68');
+        // key_client('68');
     }
 }
 
@@ -82,7 +98,7 @@ function updateKey(e) {
 function resetKey(e) {
 
     e = e || window.event;
-
+    document.getElementById("battery").innerHTML=Number(0);
     document.getElementById("upArrow").style.color = "grey";
     document.getElementById("downArrow").style.color = "grey";
     document.getElementById("leftArrow").style.color = "grey";
@@ -93,7 +109,7 @@ function resetKey(e) {
 //     // get image from python server
 //     client();
 // }, 1000);
-var flag;
+
 function test(){
     document.getElementById("battery").innerHTML=Number(document.getElementById("battery").innerHTML)+1;
 }
