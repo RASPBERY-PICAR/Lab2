@@ -132,7 +132,7 @@ function disconnect(btSerial){
 	btSerial.close();
 }
 
-function update_data(){
+function update_data_bt(){
  var flag;
  
  
