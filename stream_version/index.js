@@ -12,15 +12,13 @@ function connection_update(){
     if (document.getElementById("connection").value == "ON") {
         document.getElementById("connection").value = "OFF";
         disconnect_bt();
-        if (! btSerial.isOpen()){
-            document.getElementById("connection").innerHTML = "OFF";
-        }
+
+        document.getElementById("connection").innerHTML = "OFF";
     } else {
         document.getElementById("connection").value = "ON";
         connect_bt();
-        if (btSerial.isOpen()){
-            document.getElementById("connection").innerHTML = "ON";
-        }
+
+        document.getElementById("connection").innerHTML = "ON";
     }
 }
 
@@ -33,15 +31,13 @@ function connect_bt(){
 
 
 function disconnect_bt(){
-    if (btSerial.isOpen()){
         send_cmd('quit\r\n')
         btSerial.close();
         console.log('disconnected');
         document.getElementById("bluetooth").innerHTML =  'disconnected';  
-    }
-    else{
-        document.getElementById("bluetooth").innerHTML =  'have connected';       
-    }
+
+        // document.getElementById("bluetooth").innerHTML =  'have connected';       
+
 }
 
 function data_update(){
@@ -59,7 +55,7 @@ function data_update(){
 }
 
 function polling_data(){
-    if (btSerial.isOpen()){
+
         btSerial.write(Buffer.from('polling\r\n', 'utf-8'), function(err, bytesWritten) {
             if (err) {
                 console.log('Error!');
@@ -77,10 +73,9 @@ function polling_data(){
             console.log(b_status,t_status);
         });
         document.getElementById("bluetooth").innerHTML =  bytesWritten;      
-    }
-    else{
-    document.getElementById("bluetooth").innerHTML =  'no connection';       
-    }
+    
+    // document.getElementById("bluetooth").innerHTML =  'no connection';       
+
 }   
     
 function stream_update(){
@@ -97,7 +92,6 @@ function stream_update(){
 }
    
 function send_cmd(cmd){
-    if (btSerial.isOpen()){
         btSerial.write(Buffer.from(cmd, 'utf-8'), function(err, bytesWritten) {
             if (err) {
                 console.log('Error!');
@@ -106,10 +100,8 @@ function send_cmd(cmd){
             }
         });
         document.getElementById("bluetooth").innerHTML =  bytesWritten;      
-    }
-    else{
-    document.getElementById("bluetooth").innerHTML =  'no connection';       
-    }
+
+    // document.getElementById("bluetooth").innerHTML =  'no connection';       
 }
 
 function period_up(e){
