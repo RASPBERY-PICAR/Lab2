@@ -12,17 +12,22 @@ function connection_update(){
     if (document.getElementById("connection").value == "ON") {
         document.getElementById("connection").value = "OFF";
         disconnect_bt();
-        document.getElementById("connection").innerHTML = "OFF";
+        if (! btSerial.isOpen()){
+            document.getElementById("connection").innerHTML = "OFF";
+        }
     } else {
         document.getElementById("connection").value = "ON";
         connect_bt();
-        document.getElementById("connection").innerHTML = "ON";
+        if (btSerial.isOpen()){
+            document.getElementById("connection").innerHTML = "ON";
+        }
     }
 }
 
 function connect_bt(){
     btSerial.connect(address, 1, function() {
         console.log('connected');
+        document.getElementById("bluetooth").innerHTML =  'connected'; 
       });
 }
 
@@ -32,6 +37,10 @@ function disconnect_bt(){
         send_cmd('quit\r\n')
         btSerial.close();
         console.log('disconnected');
+        document.getElementById("bluetooth").innerHTML =  'disconnected';  
+    }
+    else{
+        document.getElementById("bluetooth").innerHTML =  'have connected';       
     }
 }
 
@@ -67,6 +76,10 @@ function polling_data(){
             document.getElementById("temperature").innerHTML = s_list[1];
             console.log(b_status,t_status);
         });
+        document.getElementById("bluetooth").innerHTML =  bytesWritten;      
+    }
+    else{
+    document.getElementById("bluetooth").innerHTML =  'no connection';       
     }
 }   
     
@@ -92,6 +105,10 @@ function send_cmd(cmd){
                 console.log('Send ' + bytesWritten + ' to the client!');
             }
         });
+        document.getElementById("bluetooth").innerHTML =  bytesWritten;      
+    }
+    else{
+    document.getElementById("bluetooth").innerHTML =  'no connection';       
     }
 }
 
