@@ -95,9 +95,10 @@ function send_cmd(cmd){
         btSerial.write(Buffer.from(cmd, 'utf-8'), function(err, bytesWritten) {
             if (err) {
                 console.log('Error!');
-            } else {
-                console.log('Send ' + bytesWritten + ' to the client!');
-            }
+            } 
+            // else {
+            //     console.log('Send ' + bytesWritten + ' to the client!');
+            // }
         });
         document.getElementById("bluetooth").innerHTML =  bytesWritten;      
 
