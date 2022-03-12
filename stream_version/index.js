@@ -1,19 +1,22 @@
-var key_flag=null;
+
 document.onkeydown =period_up;
 document.onkeyup = period_reset;
 
 var address = "E4:5F:01:42:E0:84";
-var data_flag;
+var data_flag=null;
+var key_flag=null;
 var btSerial = new (require('bluetooth-serial-port')).BluetoothSerialPort();
 
 function connection_update(){
     console.log('change connection status');
     if (document.getElementById("connection").value == "ON") {
         document.getElementById("connection").value = "OFF";
-        disconnect_bt()
+        disconnect_bt();
+        document.getElementById("connection").innerHTML = "OFF";
     } else {
-        document.getElementById("connection").value = "ON"
-        connect_bt()
+        document.getElementById("connection").value = "ON";
+        connect_bt();
+        document.getElementById("connection").innerHTML = "ON";
     }
 }
 
@@ -36,10 +39,13 @@ function data_update(){
     console.log('update data');
     if (document.getElementById("update").value == "ON") {
         document.getElementById("update").value = "OFF";
-        clearInterval(data_flag)
+        clearInterval(data_flag);
+        data_flag=null;
+        document.getElementById("update").innerHTML = "OFF";
     } else {
-        document.getElementById("update").value = "ON"
+        document.getElementById("update").value = "ON";
         data_flag=setInterval(function(){polling_data();}, 1000);
+        document.getElementById("update").innerHTML = "ON";
     }
 }
 
@@ -69,9 +75,11 @@ function stream_update(){
     if (document.getElementById("stream").value == "ON") {
         document.getElementById("stream").value = "OFF";
         send_cmd('stm_ed\r\n');
+        document.getElementById("stream").innerHTML = "OFF";
     } else {
-        document.getElementById("stream").value = "ON"
+        document.getElementById("stream").value = "ON";
         send_cmd('stm_st\r\n');
+        document.getElementById("stream").innerHTML = "ON";
     }    
 }
    
@@ -97,7 +105,7 @@ function period_up(e){
 function period_reset(e){
     if (key_flag != null) {
         clearInterval(key_flag);
-        key_flag=null
+        key_flag=null;
     }
     resetKey(e);
 }

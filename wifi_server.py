@@ -5,7 +5,7 @@ import helper_functions as hf
 
 HOST = "172.20.10.3" # IP address of your Raspberry PI
 PORT = 65432          # Port to listen on (non-privileged ports are > 1023)
-START = False
+# START = False
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((HOST, PORT))
@@ -34,26 +34,26 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 print(data)
                 hf.turn_right_deg()
 
-            if data == b"Exit\r\n":
-                print('closing')
-                client.close()
-                s.close()
-                break
+            # if data == b"Exit\r\n":
+            #     print('closing')
+            #     client.close()
+            #     s.close()
+            #     break
 
-            if not START:
-                print("x")
-                if data == b"Begin\r\n":
-                    START = True
+            # if not START:
+            #     print("x")
+            #     if data == b"Begin\r\n":
+            #         START = True
 
-            if START:
-                # sleep(1)
-                status = picar.pi_read()
-                battery_status = status['battery']
-                cpu_temp = status['cpu_temperature']
-                data2 = (str(battery_status) + ',' + str(cpu_temp)).encode('utf_8')
-                print(battery_status,cpu_temp)
-                print(data2)
-                client.send(data2)
+            # if START:
+            #     # sleep(1)
+            #     status = picar.pi_read()
+            #     battery_status = status['battery']
+            #     cpu_temp = status['cpu_temperature']
+            #     data2 = (str(battery_status) + ',' + str(cpu_temp)).encode('utf_8')
+            #     print(battery_status,cpu_temp)
+            #     print(data2)
+            #     client.send(data2)
                 # START = False
             # elif( data != b""):
             #     print(data)     
