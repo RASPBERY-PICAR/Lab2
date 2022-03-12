@@ -7,6 +7,8 @@ import time
 import picamera
 import threading
 import bluetooth
+import picar_4wd as fc
+import helper_functions as hf
 
 HOST = "172.20.10.3"  # IP address of your Raspberry PI
 # HOST = "192.168.0.35"
@@ -110,7 +112,7 @@ def main():
             data = client_bt.recv(size)
             print(data)
             if data:
-                print(data, '\n')
+                print('get data: ', data, '\n')
                 client_bt.send(data)  # Echo back to client
             if data == b"start":
                 stop_sign = False
@@ -124,7 +126,14 @@ def main():
             elif data == b"quit":
                 stop_sign = True
                 break
-
+            elif data == b"87\r\n":  # up
+                hf.forward_grid(3)
+            elif data == b"83\r\n":  # down
+                hf.backward_grid(3)
+            elif data == b"65\r\n":  # left
+                hf.turn_left_deg()
+            elif data == b"68\r\n":  # right
+                hf.turn_right_deg()
     except:
         print("Closing socket")
         client_bt.close()
@@ -153,38 +162,3 @@ def main():
 if __name__ == "__main__":
 
     main()
-
-
-# import io
-# import socket
-# import struct
-# import time
-# import picamera
-# server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# server_socket.bind((HOST, PORT))
-# server_socket.listen(0)
-# connection = server_socket.accept()[0].makefile('wb')
-
-# try:
-#     with picamera.PiCamera() as camera:
-#         camera.resolution = (320, 240)      # pi camera resolution
-#         camera.framerate = 15               # 15 frames/sec
-#         # give 2 secs for camera to initilize
-#         time.sleep(2)
-#         start = time.time()
-#         stream = io.BytesIO()
-
-#         # send jpeg format video stream
-#         for foo in camera.capture_continuous(stream, 'jpeg', use_video_port=True):
-#             connection.write(struct.pack('<L', stream.tell()))
-#             connection.flush()
-#             stream.seek(0)
-#             connection.write(stream.read())
-#             if time.time() - start > 600:
-#                 break
-#             stream.seek(0)
-#             stream.truncate()
-#     connection.write(struct.pack('<L', 0))
-# finally:
-#     connection.close()
-#     server_socket.close()
