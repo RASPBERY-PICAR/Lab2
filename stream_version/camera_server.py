@@ -94,8 +94,6 @@ def main():
             if data:
                 print('get data: ', data, '\n')
                 # client_bt.send(data)  # Echo back to client
-            else:
-                picar.stop()
             if data == b"87\r\n":  # up
                 # hf.forward_grid()
                 picar.forward(20)
@@ -125,6 +123,8 @@ def main():
             elif data == b"quit\r\n":
                 stop_sign = True
                 break
+            else:
+                picar.stop()
     except:
         print("Closing socket")
         client_bt.close()
