@@ -69,7 +69,7 @@ function polling_data(){
             // var t_status = s_list[1];
             document.getElementById("battery").innerHTML =  s_list[0];
             document.getElementById("temperature").innerHTML = s_list[1];
-            console.log(b_status,t_status);
+            //console.log(b_status,t_status);
         });
         document.getElementById("bluetooth").innerHTML =  'done';      
     
