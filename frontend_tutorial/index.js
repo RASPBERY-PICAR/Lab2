@@ -1,7 +1,10 @@
 var flag=null;
 
-document.onkeydown =period_up;
-document.onkeyup = period_reset;
+// document.onkeydown =period_up;
+// document.onkeyup = period_reset;
+
+document.onkeydown =updateKey;
+document.onkeyup = resetKey;
 
 var server_port = 65432;
 var server_addr = "172.20.10.3";   // the IP address of your Raspberry PI
