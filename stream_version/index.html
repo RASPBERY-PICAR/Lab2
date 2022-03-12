@@ -10,20 +10,19 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="./index.js"></script>
-    
   </head>
 
   <body>
     <div class="container">
   
       <div class="jumbotron">
-      <h2>CS498: IoT -- Lab 2</h2>
+      <h2>CS437: IoT -- Lab 2</h2>
 
       <!-- <video class="center" width="600" height="400" controls>
         <source src="samplevid.mp4" type="video/mp4">
           Your browser does not support the video tag.
       </video> -->
-      <img src="./media/default_background.png" id='pics'>
+      <!-- <img src="./media/default_background.png" id='pics'> -->
     </div> 
   
   </div>
@@ -44,23 +43,26 @@
 
         <div class="jumbotron text-left col-md-6">
         <input id="message" type="text" placeholder="message to Pi"/>
-        <button class="btn btn-success" onclick="clientbt_connect()">Submit</button>
+        <button class="btn btn-success" onclick="update_data()">Submit</button>
           <p>
-            <input onclick="update_data_bt()" type="checkbox" type="switch" value="ON/OFF" name="Button1">UPDATE: <span id="update" value ="OFF"> </span>
-            <br>
+            <input onclick="connection_update()" type="checkbox" type="switch" value="ON/OFF" name="Button3">Bluetooth: <span id="connection" value ="OFF"> </span>
+            <br>            
+            <input onclick="data_update()" type="checkbox" type="switch" value="ON/OFF" name="Button1">UPDATE: <span id="update" value ="OFF"> </span>
+          <br>
+            <input onclick="stream_update()" type="checkbox" type="switch" value="ON/OFF" name="Button2">stream: <span id="stream" value ="OFF"> </span>
+          <br>
             <span id="battery_dot" style="color:Green">&bull;</span> Car Battery: <span id="battery"> </span>
            <br>
-           <span id="distance_dot" style="color:green">&bull;</span> Obstacle Distance: <span id="distance"> </span>  
+           <span id="speed_dot" style="color:green">&bull;</span> Speed: <span id="speed"> </span>  
            <br>
-           <span id="moving_dot" style="color:green">&bull;</span> Moving: <span id="direction"> </span>
+           <span id="distance_dot" style="color:green">&bull;</span> Distance Traveled: <span id="distance"> </span>
            <br>
            <span id="temprature_dot" style="color:green">&bull;</span> Temperature of the Pi: <span id="temperature"> </span>
-           
+           <br>
+           Bluetooth return value: <span id="bluetooth"> </span>
           </p>  
         </div>
     </div>
 </div>
-
   </body>
 </html>
-
