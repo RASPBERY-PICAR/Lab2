@@ -1,9 +1,10 @@
-var key_flag=null;
+
 document.onkeydown =period_up;
 document.onkeyup = period_reset;
 
 var address = "E4:5F:01:42:E0:84";
-var data_flag;
+var data_flag=null;
+var key_flag=null;
 var btSerial = new (require('bluetooth-serial-port')).BluetoothSerialPort();
 
 function connection_update(){
@@ -11,9 +12,11 @@ function connection_update(){
     if (document.getElementById("connection").value == "ON") {
         document.getElementById("connection").value = "OFF";
         disconnect_bt()
+        document.getElementById("connection").innerHTML = "OFF";
     } else {
         document.getElementById("connection").value = "ON"
         connect_bt()
+        document.getElementById("connection").innerHTML = "ON";
     }
 }
 
@@ -37,9 +40,12 @@ function data_update(){
     if (document.getElementById("update").value == "ON") {
         document.getElementById("update").value = "OFF";
         clearInterval(data_flag)
+        data_flag=null
+        document.getElementById("update").innerHTML = "OFF";
     } else {
         document.getElementById("update").value = "ON"
         data_flag=setInterval(function(){polling_data();}, 1000);
+        document.getElementById("update").innerHTML = "ON";
     }
 }
 
@@ -69,9 +75,11 @@ function stream_update(){
     if (document.getElementById("stream").value == "ON") {
         document.getElementById("stream").value = "OFF";
         send_cmd('stm_ed\r\n');
+        document.getElementById("stream").innerHTML = "OFF";
     } else {
         document.getElementById("stream").value = "ON"
         send_cmd('stm_st\r\n');
+        document.getElementById("stream").innerHTML = "ON";
     }    
 }
    
