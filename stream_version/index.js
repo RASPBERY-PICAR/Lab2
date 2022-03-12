@@ -108,7 +108,7 @@ function send_cmd(cmd){
 function period_up(e){
     if (key_flag == null) {
         updateKey(e);
-        key_flag=setInterval(function(){updateKey(e);}, 100);
+        key_flag=setInterval(function(){updateKey(e);}, 1000);
     }
 }
 
