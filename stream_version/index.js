@@ -55,7 +55,7 @@ function data_update(){
 }
 
 function polling_data(){
-
+    document.getElementById("bluetooth").innerHTML = 'start poll';
         btSerial.write(Buffer.from('polling\r\n', 'utf-8'), function(err, bytesWritten) {
             if (err) {
                 console.log('Error!');
@@ -63,7 +63,7 @@ function polling_data(){
                 console.log('Send ' + bytesWritten + ' to the client!');
             }
         });
-    
+        document.getElementById("bluetooth").innerHTML = 'recv';
         btSerial.on('data', function(buffer) {
             var s_list = buffer.toString().split(",");
             // var b_status = s_list[0];
@@ -72,7 +72,7 @@ function polling_data(){
             document.getElementById("temperature").innerHTML = s_list[1];
             console.log(b_status,t_status);
         });
-        document.getElementById("bluetooth").innerHTML =  bytesWritten;      
+        document.getElementById("bluetooth").innerHTML =  'done';      
     
     // document.getElementById("bluetooth").innerHTML =  'no connection';       
 
