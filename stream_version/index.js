@@ -100,7 +100,7 @@ function send_cmd(cmd){
             //     console.log('Send ' + bytesWritten + ' to the client!');
             // }
         });
-        document.getElementById("bluetooth").innerHTML =  bytesWritten;      
+        // document.getElementById("bluetooth").innerHTML =  bytesWritten;      
 
     // document.getElementById("bluetooth").innerHTML =  'no connection';       
 }
