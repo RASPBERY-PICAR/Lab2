@@ -9,7 +9,7 @@
     </style>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="./index_bt.js"></script>
+    <script src="./index.js"></script>
     
   </head>
 
@@ -46,7 +46,7 @@
         <input id="message" type="text" placeholder="message to Pi"/>
         <button class="btn btn-success" onclick="clientbt_connect()">Submit</button>
           <p>
-            <input onclick="update_data()" type="checkbox" type="switch" value="ON/OFF" name="Button1">UPDATE: <span id="update" value ="OFF"> </span>
+            <input onclick="update_data_bt()" type="checkbox" type="switch" value="ON/OFF" name="Button1">UPDATE: <span id="update" value ="OFF"> </span>
             <br>
             <span id="battery_dot" style="color:Green">&bull;</span> Car Battery: <span id="battery"> </span>
            <br>
