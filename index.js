@@ -57,21 +57,25 @@ function updateKey(e) {
     if (e.keyCode == '87') {
         // up (w)
         document.getElementById("upArrow").style.color = "green";
+        document.getElementById("direction").innerHTML = "Forward";
         key_client('87');
     }
     else if (e.keyCode == '83') {
         // down (s)
         document.getElementById("downArrow").style.color = "green";
+        document.getElementById("direction").innerHTML = "Backward";
         key_client('83');
     }
     else if (e.keyCode == '65') {
         // left (a)
         document.getElementById("leftArrow").style.color = "green";
+        document.getElementById("direction").innerHTML = "Turn Left";
         key_client('65');
     }
     else if (e.keyCode == '68') {
         // right (d)
         document.getElementById("rightArrow").style.color = "green";
+        document.getElementById("direction").innerHTML = "Turn Right";
         key_client('68');
     }
 }
