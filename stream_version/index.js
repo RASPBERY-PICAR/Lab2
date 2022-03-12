@@ -17,7 +17,6 @@ function connection_update(){
     } else {
         document.getElementById("connection").value = "ON";
         connect_bt();
-
         document.getElementById("connection").innerHTML = "ON";
     }
 }
