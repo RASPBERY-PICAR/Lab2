@@ -108,10 +108,11 @@ def main():
                 hf.turn_right_deg()
             elif data == b"polling\r\n":
                 status = picar.pi_read()
-                battery_status = status['battery']
+                battery_status = (status['battery']-6)/2*100
                 cpu_temp = status['cpu_temperature']
-                res = [battery_status, cpu_temp]
-                data = struct.pack('%sf' % len(res), *res)
+                data = (str(battery_status)+"%" + ',' +
+                        str(cpu_temp)+" C").encode('utf_8')
+                print(data)
                 client_bt.send(data)
             elif data == b"stm_st\r\n":
                 stop_sign = False

@@ -54,22 +54,23 @@ function data_update(){
 }
 
 function polling_data(){
-    document.getElementById("bluetooth").innerHTML = 'start poll';
+    // document.getElementById("bluetooth").innerHTML = 'start poll';
         btSerial.write(Buffer.from('polling\r\n', 'utf-8'), function(err, bytesWritten) {
             if (err) {
                 console.log('Error!');
-            } else {
-                console.log('Send ' + bytesWritten + ' to the client!');
-            }
+            } 
+            // else {
+            //     console.log('Send ' + bytesWritten + ' to the client!');
+            // }
         });
-        document.getElementById("bluetooth").innerHTML = 'recv';
+        // document.getElementById("bluetooth").innerHTML = 'recv';
         btSerial.on('data', function(buffer) {
             var s_list = buffer.toString().split(",");
-            // var b_status = s_list[0];
-            // var t_status = s_list[1];
-            document.getElementById("battery").innerHTML =  s_list[0];
-            document.getElementById("temperature").innerHTML = s_list[1];
-            //console.log(b_status,t_status);
+            var b_status = s_list[0];
+            var t_status = s_list[1];
+            document.getElementById("battery").innerHTML =  b_status;
+            document.getElementById("temperature").innerHTML = t_status;
+            console.log(b_status,t_status);
         });
         document.getElementById("bluetooth").innerHTML =  'done';      
     
