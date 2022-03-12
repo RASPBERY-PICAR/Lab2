@@ -52,7 +52,7 @@ var address = "E4:5F:01:42:E0:84";
   btSerial.connect(address, 1, function() {
     console.log('connected');
   
-    btSerial.write(Buffer.from('${input}\r\n', 'utf-8'), function(err, bytesWritten) {
+    btSerial.write(Buffer.from('Begin\r\n', 'utf-8'), function(err, bytesWritten) {
       if (err) console.log(err);
     });
 
@@ -69,3 +69,26 @@ var address = "E4:5F:01:42:E0:84";
   });
   btSerial.close();
 }   
+
+ function update_data(){
+ var flag;
+     console.log('update_data');
+     if (document.getElementById("update").value == "ON") {
+
+         document.getElementById("update").value = "OFF";
+         clearInterval(flag)
+         //document.getElementById("battery").innerHTML = 0;
+     } else {
+         
+         document.getElementById("update").value = "ON"
+         flag=setInterval(function(){clientbt();}, 1000);
+     }
+    
+     // document.getElementById("battery").innerHTML = "1";
+     // setInterval(function(){
+     //     // get image from python server
+     //     client();
+     // }, 1000);
+}
+
+
