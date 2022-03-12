@@ -15,7 +15,7 @@ PORT = 65432          # The port used by the server
 # bluetooth
 # The address of Raspberry PI Bluetooth adapter on the server. The server might have multiple Bluetooth adapters.
 hostMACAddress = "E4:5F:01:42:E0:84"
-port = 0
+port = 1
 backlog = 1
 size = 1024
 
