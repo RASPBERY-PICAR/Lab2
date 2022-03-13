@@ -124,7 +124,7 @@ def main():
                 distance = round(distance_raw,2)
                 data = (str(battery_status)+"%" + ',' +
                         str(cpu_temp)+" C"+','+str(distance)+"cm").encode('utf_8')
-                # print(data)
+                print(data)
                 client_bt.send(data)
             elif data == b"stm_st\r\n":
                 stop_sign = False
