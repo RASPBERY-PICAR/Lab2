@@ -48,6 +48,7 @@ function data_update(){
         document.getElementById("update").innerHTML = "OFF";
     } else {
         document.getElementById("update").value = "ON";
+        document.getElementById("direction").innerHTML = "Stop";
         data_flag=setInterval(function(){polling_data();}, 1000);
         document.getElementById("update").innerHTML = "ON";
     }
@@ -68,8 +69,10 @@ function polling_data(){
             var s_list = buffer.toString().split(",");
             var b_status = s_list[0];
             var t_status = s_list[1];
+            var distance = s_list[2];
             document.getElementById("battery").innerHTML =  b_status;
             document.getElementById("temperature").innerHTML = t_status;
+            document.getElementById("distance").innerHTML = distance;
             console.log(b_status,t_status);
         });
         document.getElementById("bluetooth").innerHTML =  'done';      
@@ -128,25 +131,30 @@ function updateKey(e) {
     if (e.keyCode == '87') {
         // up (w)
         document.getElementById("upArrow").style.color = "green";
+        document.getElementById("direction").innerHTML = "Forward";
         send_cmd('87\r\n');
     }
     else if (e.keyCode == '83') {
         // down (s)
         document.getElementById("downArrow").style.color = "green";
+        document.getElementById("direction").innerHTML = "Backward";
         send_cmd('83\r\n');
     }
     else if (e.keyCode == '65') {
         // left (a)
         document.getElementById("leftArrow").style.color = "green";
+        document.getElementById("direction").innerHTML = "Turn Left";
         send_cmd('65\r\n');
     }
     else if (e.keyCode == '68') {
         // right (d)
         document.getElementById("rightArrow").style.color = "green";
+        document.getElementById("direction").innerHTML = "Turn Right";
         send_cmd('68\r\n');
     }
     else if (e.keyCode == '81') {
         // stop
+        document.getElementById("direction").innerHTML = "Stop";
         send_cmd('81\r\n');
     }
     else if (e.keyCode == '74') {
@@ -169,6 +177,7 @@ function resetKey(e) {
 
     e = e || window.event;
     send_cmd('81\r\n');
+    document.getElementById("direction").innerHTML = "Stop";
     document.getElementById("upArrow").style.color = "grey";
     document.getElementById("downArrow").style.color = "grey";
     document.getElementById("leftArrow").style.color = "grey";
