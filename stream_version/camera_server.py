@@ -111,7 +111,7 @@ def main():
                 picar.turn_left(power)
             elif data == b"68\r\n":  # right
                 # hf.turn_right_deg()
-                picar.turn_left(power)
+                picar.turn_right(power)
             elif data == b"81\r\n":  # stop
                 # hf.turn_right_deg()
                 picar.stop()
