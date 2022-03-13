@@ -17,7 +17,7 @@ PORT = 65432          # The port used by the server
 hostMACAddress = "E4:5F:01:42:E0:84"
 port = 1
 backlog = 1
-bt_size = 256
+bt_size = 32
 power = 20
 
 
@@ -133,9 +133,11 @@ def main():
                 stream_thread.start()
             elif data == b"stm_ed\r\n":
                 stop_sign = True
+                picar.stop()
                 continue
             elif data == b"quit\r\n":
                 stop_sign = True
+                picar.stop()
                 break
             else:
                 print('stop\n')
