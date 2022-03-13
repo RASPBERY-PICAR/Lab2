@@ -7,7 +7,7 @@ import picamera
 import threading
 import bluetooth
 import picar_4wd as picar
-import helper_functions as hf
+
 # wifi
 HOST = "172.20.10.3"  # IP address of your Raspberry PI
 PORT = 65432          # The port used by the server
@@ -24,6 +24,8 @@ power = 20
 stop_sign = False
 
 
+# MJPEG splitting
+# refer to https://picamera.readthedocs.io/en/release-1.13/recipes2.html#rapid-capture-and-streaming
 class SplitFrames(object):
     def __init__(self, connection):
         self.connection = connection
@@ -45,6 +47,8 @@ class SplitFrames(object):
         self.stream.write(buf)  # store new frame
 
 
+# Rapid capture and streaming
+# refer to https://picamera.readthedocs.io/en/release-1.13/recipes2.html#rapid-capture-and-streaming
 def streaming():
     global stop_sign
     # connection = client.makefile('wb')
@@ -68,10 +72,9 @@ def streaming():
                 camera.start_recording(output, format='mjpeg')
                 camera.wait_recording(5)
                 camera.stop_recording()
-                # Write the terminating 0-length to the connection to let the
-                # server know we're done
-
     finally:
+        # Write the terminating 0-length to the connection to let the
+        # server know we're done
         connection.write(struct.pack('<L', 0))
         connection.close()
         client.close()
@@ -81,6 +84,8 @@ def streaming():
             output.count, finish-start, output.count / (finish-start)))
 
 
+# main thread
+# keep receiving Bluetooth signal from client and give response
 def main():
     global stop_sign
     cnt = 0
@@ -102,21 +107,16 @@ def main():
                 print('get data: ', data, '\n')
                 # client_bt.send(data)  # Echo back to client
             if data == b"87\r\n":  # up
-                # hf.forward_grid()
                 dis = picar.get_distance_at(0)
                 if (dis == -2 or dis > 15):
-                    picar.forward(power)
+                    picar.forward(power)  # self-protection
             elif data == b"83\r\n":  # down
-                # hf.backward_grid()
                 picar.backward(power)
             elif data == b"65\r\n":  # left
-                # hf.turn_left_deg()
                 picar.turn_left(power)
             elif data == b"68\r\n":  # right
-                # hf.turn_right_deg()
                 picar.turn_right(power)
             elif data == b"81\r\n":  # stop
-                # hf.turn_right_deg()
                 picar.stop()
             elif data == b"polling\r\n":
                 status = picar.pi_read()
@@ -145,8 +145,6 @@ def main():
             else:
                 print('stop\n')
                 picar.stop()
-            # else:
-            #     picar.stop()
     except:
         finish_time = time.time()
         print('total time:', finish_time-start_time, 'received ',

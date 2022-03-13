@@ -1,44 +1,30 @@
 
-document.onkeydown =period_up;
-document.onkeyup = period_reset;
+// redefine the onkeydown and onkeyup event
+document.onkeydown =new_update_key;
+document.onkeyup = new_reset_key;
 
 var address = "E4:5F:01:42:E0:84";
 var data_flag=null;
 var key_flag=null;
 var btSerial = new (require('bluetooth-serial-port')).BluetoothSerialPort();
 
+// called in the html
+// change the bluetooth connection state
 function connection_update(){
     console.log('change connection status');
     if (document.getElementById("connection").value == "ON") {
-        document.getElementById("connection").value = "OFF";
         disconnect_bt();
-
+        document.getElementById("connection").value = "OFF";
         document.getElementById("connection").innerHTML = "OFF";
     } else {
-        document.getElementById("connection").value = "ON";
         connect_bt();
+        document.getElementById("connection").value = "ON";
         document.getElementById("connection").innerHTML = "ON";
     }
 }
 
-function connect_bt(){
-    btSerial.connect(address, 1, function() {
-        console.log('connected');
-        document.getElementById("bluetooth").innerHTML =  'connected'; 
-      });
-}
-
-
-function disconnect_bt(){
-        send_cmd('quit\r\n')
-        btSerial.close();
-        console.log('disconnected');
-        document.getElementById("bluetooth").innerHTML =  'disconnected';  
-
-        // document.getElementById("bluetooth").innerHTML =  'have connected';       
-
-}
-
+// called in the html
+// change the state of the updating data, can update data in period or stop updating
 function data_update(){
     console.log('update data');
     if (document.getElementById("update").value == "ON") {
@@ -54,33 +40,8 @@ function data_update(){
     }
 }
 
-function polling_data(){
-    // document.getElementById("bluetooth").innerHTML = 'start poll';
-        btSerial.write(Buffer.from('polling\r\n', 'utf-8'), function(err, bytesWritten) {
-            if (err) {
-                console.log('Error!');
-            } 
-            // else {
-            //     console.log('Send ' + bytesWritten + ' to the client!');
-            // }
-        });
-        // document.getElementById("bluetooth").innerHTML = 'recv';
-        btSerial.on('data', function(buffer) {
-            var s_list = buffer.toString().split(",");
-            var b_status = s_list[0];
-            var t_status = s_list[1];
-            var distance = s_list[2];
-            document.getElementById("battery").innerHTML =  b_status;
-            document.getElementById("temperature").innerHTML = t_status;
-            document.getElementById("distance").innerHTML = distance;
-            console.log(b_status,t_status);
-        });
-        document.getElementById("bluetooth").innerHTML =  'done';      
-    
-    // document.getElementById("bluetooth").innerHTML =  'no connection';       
-
-}   
-    
+// called in the html
+// change the state of streaming, start or end the real-time stream
 function stream_update(){
     console.log('update stream status');
     if (document.getElementById("stream").value == "ON") {
@@ -93,24 +54,69 @@ function stream_update(){
         document.getElementById("stream").innerHTML = "ON";
     }    
 }
-   
-function send_cmd(cmd){
-        btSerial.write(Buffer.from(cmd, 'utf-8'), function(err, bytesWritten) {
-            if (err) {
-                console.log('Error!');
-            } 
-        });
- 
+
+// helpfunction
+// connect to picar by bluetooth 
+function connect_bt(){
+    btSerial.connect(address, 1, function() {
+        console.log('connected');
+        document.getElementById("bluetooth").innerHTML =  'connected'; 
+      });
 }
 
-function period_up(e){
+// helpfunction
+// disconnect
+function disconnect_bt(){
+    send_cmd('quit\r\n')
+    btSerial.close();
+    console.log('disconnected');
+    document.getElementById("bluetooth").innerHTML =  'disconnected';  
+}
+
+// helpfunction 
+// update pi's data one time
+function polling_data(){
+    btSerial.write(Buffer.from('polling\r\n', 'utf-8'), function(err, bytesWritten) {
+        if (err) {
+            console.log('Error!');
+        } 
+    });
+    btSerial.on('data', function(buffer) {
+        var s_list = buffer.toString().split(",");
+        var b_status = s_list[0];
+        var t_status = s_list[1];
+        var distance = s_list[2];
+        document.getElementById("battery").innerHTML =  b_status;
+        document.getElementById("temperature").innerHTML = t_status;
+        document.getElementById("distance").innerHTML = distance;
+        console.log(b_status,t_status);
+    });
+    document.getElementById("bluetooth").innerHTML =  'done';      
+}   
+
+
+// helpfunction 
+// send one command to pi
+function send_cmd(cmd){
+    btSerial.write(Buffer.from(cmd, 'utf-8'), function(err, bytesWritten) {
+        if (err) {
+            console.log('Error!');
+        } 
+    });
+}
+
+// helpfunction
+// update key in period
+function new_update_key(e){
     if (key_flag == null) {
         updateKey(e);
         key_flag=setInterval(function(){updateKey(e);}, 500);
     }
 }
 
-function period_reset(e){
+// helpfunction
+// stop updating key in period and reset
+function new_reset_key(e){
     if (key_flag != null) {
         clearInterval(key_flag);
         key_flag=null;
@@ -118,11 +124,10 @@ function period_reset(e){
     resetKey(e);
 }
 
-
+// helpfunction
+// send cmd when direction keys are pressed and show the state in web
 function updateKey(e) {
-
     e = e || window.event;
-
     if (e.keyCode == '87') {
         // up (w)
         document.getElementById("upArrow").style.color = "green";
@@ -154,9 +159,9 @@ function updateKey(e) {
     }
 }
 
-// reset the key to the start state 
+// helpfunction
+// reset the key and send smd to stop the car
 function resetKey(e) {
-
     e = e || window.event;
     send_cmd('81\r\n');
     document.getElementById("direction").innerHTML = "Stop";

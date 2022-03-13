@@ -1,56 +1,20 @@
 # PC
 import numpy as np
 import cv2
-import time
-import threading
+# import time
+# import threading
 import socket
 import struct
 import io
 from PIL import Image
-import bluetooth
 
 HOST = "172.20.10.3"  # IP address of your Raspberry PI
-# HOST = "192.168.0.35"
 PORT = 65432          # Port to listen on (non-privileged ports are > 1023)
 
-sign = b'00'
 
-#
-
-
-def send_f():
-    global sign
-    host = "E4:5F:01:42:E0:84"
-    port = 1
-    sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-    sock.connect((host, port))
-    while 1:
-        # Note change to the old (Python 2) raw_input
-        text = input("Enter your message: ")
-        sock.send(text)
-        print('sent', text, '\n')
-        if (text == "quit"):
-            sign = b'11'
-            break
-        # send the encoded message (send in binary format)
-        if (text == "start"):
-            sign = b'01'
-        elif (text == "end"):
-            sign = b'00'
-
-
+# receive the video stream and display
+# refer to https://picamera.readthedocs.io/en/release-1.13/recipes1.html#streaming-capture
 def recv_st():
-    global sign
-    # stream_thread = threading.Thread(
-    #     target=send_f, name='Thread', daemon=True)
-    # stream_thread.start()
-
-    # while 1:
-    #     if sign == b'11':
-    #         break
-    #     elif sign == b'00':
-    #         continue
-    # need while
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
         client_socket.connect((HOST, PORT))
         connection = client_socket.makefile('rb')
