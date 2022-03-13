@@ -117,10 +117,11 @@ def main():
                 picar.stop()
             elif data == b"polling\r\n":
                 status = picar.pi_read()          
-                battery_status = (status['battery']-6)/2.3*100
-                battery_status = round(battery_status,2)
+                battery_status_raw = (status['battery']-6)/2.3*100
+                battery_status = round(battery_status_raw,2)
                 cpu_temp = status['cpu_temperature']
-                distance = round(picar.get_distance(),2)
+                distance_raw = picar.get_distance()
+                distance = round(distance_raw,2)
                 data = (str(battery_status)+"%" + ',' +
                         str(cpu_temp)+" C"+','+str(distance)+"cm").encode('utf_8')
                 # print(data)
