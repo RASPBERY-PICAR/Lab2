@@ -99,13 +99,8 @@ function send_cmd(cmd){
             if (err) {
                 console.log('Error!');
             } 
-            // else {
-            //     console.log('Send ' + bytesWritten + ' to the client!');
-            // }
         });
-        // document.getElementById("bluetooth").innerHTML =  bytesWritten;      
-
-    // document.getElementById("bluetooth").innerHTML =  'no connection';       
+ 
 }
 
 function period_up(e){
@@ -157,19 +152,6 @@ function updateKey(e) {
         document.getElementById("direction").innerHTML = "Stop";
         send_cmd('81\r\n');
     }
-    else if (e.keyCode == '74') {
-        // connection (j)
-        connection_update();
-    }
-    else if (e.keyCode == '75') {
-        // data (k)
-        data_update();
-    }
-    else if (e.keyCode == '76') {
-        // stream (l)
-        stream_update();
-    }
-
 }
 
 // reset the key to the start state 
