@@ -94,7 +94,6 @@ def main():
         client_bt, client_bt_Info = server_bt.accept()
         print("server recv from: ", client_bt_Info)
         while 1:
-            picar.stop()
             data = client_bt.recv(bt_size)
             cnt += 1
             if data:

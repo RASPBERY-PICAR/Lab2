@@ -146,7 +146,7 @@ function updateKey(e) {
         send_cmd('68\r\n');
     }
     else if (e.keyCode == '81') {
-        // right (d)
+        // stop
         send_cmd('81\r\n');
     }
     else if (e.keyCode == '74') {
@@ -168,7 +168,7 @@ function updateKey(e) {
 function resetKey(e) {
 
     e = e || window.event;
-
+    send_cmd('81\r\n');
     document.getElementById("upArrow").style.color = "grey";
     document.getElementById("downArrow").style.color = "grey";
     document.getElementById("leftArrow").style.color = "grey";
