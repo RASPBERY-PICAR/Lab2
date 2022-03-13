@@ -55,7 +55,7 @@ def recv_st():
         client_socket.connect((HOST, PORT))
         connection = client_socket.makefile('rb')
         try:
-            print("Streaming...Press 'q' to exit")
+            print("Streaming...")
             while True:
                 # Read the length of the image as a 32-bit unsigned int. If the
                 # length is zero, quit the loop
@@ -72,8 +72,8 @@ def recv_st():
                 # processing on it
                 image_stream.seek(0)
                 image = np.array(Image.open(image_stream))
-                # b, g, r = cv2.split(image)
-                # image = cv2.merge([r, g, b])
+                b, g, r = cv2.split(image)
+                image = cv2.merge([r, g, b])
                 cv2.imshow('image', image)
                 if cv2.waitKey(1) & 0xFF == ord('q'):
                     break

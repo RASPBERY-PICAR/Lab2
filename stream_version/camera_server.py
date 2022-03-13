@@ -63,9 +63,10 @@ def streaming():
             start = time.time()
             while True:
                 if stop_sign:
+                    connection.write(struct.pack('<L', 0))
                     break
                 camera.start_recording(output, format='mjpeg')
-                camera.wait_recording(10)
+                camera.wait_recording(5)
                 camera.stop_recording()
                 # Write the terminating 0-length to the connection to let the
                 # server know we're done
@@ -102,7 +103,9 @@ def main():
                 # client_bt.send(data)  # Echo back to client
             if data == b"87\r\n":  # up
                 # hf.forward_grid()
-                picar.forward(power)
+                dis = picar.get_distance_at(0)
+                if (dis == -2 or dis > 15):
+                    picar.forward(power)
             elif data == b"83\r\n":  # down
                 # hf.backward_grid()
                 picar.backward(power)
@@ -116,12 +119,12 @@ def main():
                 # hf.turn_right_deg()
                 picar.stop()
             elif data == b"polling\r\n":
-                status = picar.pi_read()          
+                status = picar.pi_read()
                 battery_status_raw = (status['battery']-6)/2.3*100
-                battery_status = round(battery_status_raw,2)
+                battery_status = round(battery_status_raw, 2)
                 cpu_temp = status['cpu_temperature']
                 distance_raw = picar.get_distance_at(0)
-                distance = round(distance_raw,2)
+                distance = round(distance_raw, 2)
                 data = (str(battery_status)+"%" + ',' +
                         str(cpu_temp)+" C"+','+str(distance)+"cm").encode('utf_8')
                 print(data)
@@ -151,29 +154,9 @@ def main():
         print("Closing socket")
         client_bt.close()
         server_bt.close()
-
-    # stop_cnt = 0
-    # while (stop_cnt < 2):
-    #     data = client.recv(1024)
-    #     if data == b"start\r\n":
-    #         print(data)
-    #         stop_sign = False
-    #         connection = client.makefile('wb')
-    #         stream_thread = threading.Thread(
-    #             target=streaming, name='Thread', daemon=True)
-    #         stream_thread.start()
-    #     elif data == b"end\r\n":
-    #         stop_cnt += 1
-    #         stop_sign = True
-    #         break
-
-    # print(stream_thread.name+' is alive ', stream_thread.isAlive())
-
     return
 
 
 if __name__ == "__main__":
 
     main()
-    
-    
