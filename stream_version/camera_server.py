@@ -17,7 +17,8 @@ PORT = 65432          # The port used by the server
 hostMACAddress = "E4:5F:01:42:E0:84"
 port = 1
 backlog = 1
-size = 1024
+bt_size = 64
+power = 50
 
 
 stop_sign = False
@@ -81,36 +82,46 @@ def streaming():
 
 def main():
     global stop_sign
+    cnt = 0
+    vld_cnt = 0
 
     server_bt = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
     server_bt.bind((hostMACAddress, port))
     server_bt.listen(backlog)
     print("listening on port ", port)
+    start_time = time.time()
     try:
         client_bt, client_bt_Info = server_bt.accept()
+        print("server recv from: ", client_bt_Info)
         while 1:
-            print("server recv from: ", client_bt_Info)
-            data = client_bt.recv(size)
+            data = client_bt.recv(bt_size)
+            cnt += 1
             if data:
+                vld_cnt += 1
                 print('get data: ', data, '\n')
+            else:
+                picar.stop()
+                continue
                 # client_bt.send(data)  # Echo back to client
             if data == b"87\r\n":  # up
                 # hf.forward_grid()
-                picar.forward(20)
+                picar.forward(power)
             elif data == b"83\r\n":  # down
                 # hf.backward_grid()
-                picar.backward(20)
+                picar.backward(power)
             elif data == b"65\r\n":  # left
-                hf.turn_left_deg()
+                # hf.turn_left_deg()
+                picar.turn_left(power)
             elif data == b"68\r\n":  # right
-                hf.turn_right_deg()
+                # hf.turn_right_deg()
+                picar.turn_left(power)
             elif data == b"polling\r\n":
                 status = picar.pi_read()
                 battery_status = (status['battery']-6)/2*100
                 cpu_temp = status['cpu_temperature']
                 data = (str(battery_status)+"%" + ',' +
                         str(cpu_temp)+" C").encode('utf_8')
-                print(data)
+                # print(data)
                 client_bt.send(data)
             elif data == b"stm_st\r\n":
                 stop_sign = False
@@ -123,9 +134,12 @@ def main():
             elif data == b"quit\r\n":
                 stop_sign = True
                 break
-            else:
-                picar.stop()
+            # else:
+            #     picar.stop()
     except:
+        finish_time = time.time()
+        print('total time: %d, received %d data and %d valid data.',
+              finish_time-start_time, cnt, vld_cnt)
         print("Closing socket")
         client_bt.close()
         server_bt.close()
