@@ -18,7 +18,7 @@ hostMACAddress = "E4:5F:01:42:E0:84"
 port = 1
 backlog = 1
 bt_size = 64
-power = 50
+power = 20
 
 
 stop_sign = False
@@ -137,6 +137,8 @@ def main():
             elif data == b"quit\r\n":
                 stop_sign = True
                 break
+            else:
+                picar.stop()
             # else:
             #     picar.stop()
     except:
