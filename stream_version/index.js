@@ -145,7 +145,7 @@ function updateKey(e) {
         document.getElementById("rightArrow").style.color = "green";
         send_cmd('68\r\n');
     }
-    else if (e.keyCode == '68') {
+    else if (e.keyCode == '100') {
         // right (d)
         send_cmd('100\r\n');
     }
