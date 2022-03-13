@@ -100,8 +100,8 @@ def main():
                 vld_cnt += 1
                 print('get data: ', data, '\n')
             else:
+                print('stop\n')
                 picar.stop()
-                continue
                 # client_bt.send(data)  # Echo back to client
             if data == b"87\r\n":  # up
                 # hf.forward_grid()
@@ -138,13 +138,14 @@ def main():
                 stop_sign = True
                 break
             else:
+                print('stop\n')
                 picar.stop()
             # else:
             #     picar.stop()
     except:
         finish_time = time.time()
-        print('total time: %d, received %d data and %d valid data.',
-              finish_time-start_time, cnt, vld_cnt)
+        print('total time:', finish_time-start_time, 'received ',
+              cnt, ' data and ', vld_cnt, 'valid data.')
         print("Closing socket")
         client_bt.close()
         server_bt.close()
