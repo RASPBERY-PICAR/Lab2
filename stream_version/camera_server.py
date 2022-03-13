@@ -17,7 +17,7 @@ PORT = 65432          # The port used by the server
 hostMACAddress = "E4:5F:01:42:E0:84"
 port = 1
 backlog = 1
-bt_size = 64
+bt_size = 256
 power = 20
 
 
