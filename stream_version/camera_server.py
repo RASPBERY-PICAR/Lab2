@@ -120,7 +120,7 @@ def main():
                 battery_status_raw = (status['battery']-6)/2.3*100
                 battery_status = round(battery_status_raw,2)
                 cpu_temp = status['cpu_temperature']
-                distance_raw = picar.get_distance()
+                distance_raw = picar.get_distance_at(0)
                 distance = round(distance_raw,2)
                 data = (str(battery_status)+"%" + ',' +
                         str(cpu_temp)+" C"+','+str(distance)+"cm").encode('utf_8')
