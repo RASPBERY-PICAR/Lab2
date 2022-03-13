@@ -96,6 +96,8 @@ def main():
         while 1:
             data = client_bt.recv(bt_size)
             cnt += 1
+            print('stop1\n')
+            picar.stop()
             if data:
                 vld_cnt += 1
                 print('get data: ', data, '\n')
@@ -115,7 +117,7 @@ def main():
             elif data == b"68\r\n":  # right
                 # hf.turn_right_deg()
                 picar.turn_left(power)
-            elif data == b"32\r\n":  # stop
+            elif data == b"81\r\n":  # stop
                 # hf.turn_right_deg()
                 picar.stop()
             elif data == b"polling\r\n":
