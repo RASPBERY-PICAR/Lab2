@@ -94,16 +94,12 @@ def main():
         client_bt, client_bt_Info = server_bt.accept()
         print("server recv from: ", client_bt_Info)
         while 1:
+            picar.stop()
             data = client_bt.recv(bt_size)
             cnt += 1
-            print('stop1\n')
-            picar.stop()
             if data:
                 vld_cnt += 1
                 print('get data: ', data, '\n')
-            else:
-                print('stop\n')
-                picar.stop()
                 # client_bt.send(data)  # Echo back to client
             if data == b"87\r\n":  # up
                 # hf.forward_grid()
