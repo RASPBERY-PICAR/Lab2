@@ -145,6 +145,10 @@ function updateKey(e) {
         document.getElementById("rightArrow").style.color = "green";
         send_cmd('68\r\n');
     }
+    else if (e.keyCode == '68') {
+        // right (d)
+        send_cmd('100\r\n');
+    }
     else if (e.keyCode == '74') {
         // connection (j)
         connection_update();

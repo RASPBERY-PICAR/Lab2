@@ -115,6 +115,9 @@ def main():
             elif data == b"68\r\n":  # right
                 # hf.turn_right_deg()
                 picar.turn_left(power)
+            elif data == b"100\r\n":  # stop
+                # hf.turn_right_deg()
+                picar.stop()
             elif data == b"polling\r\n":
                 status = picar.pi_read()
                 battery_status = (status['battery']-6)/2*100
